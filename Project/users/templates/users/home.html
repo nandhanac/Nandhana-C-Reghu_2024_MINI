@@ -1,0 +1,21 @@
+{% extends "users/base.html" %}
+{% block title %} Home Page {% endblock title%}
+{% block content %}
+    <div class="jumbotron">
+        <h1 class="display-4">Welcome, {{user.first_name.title|default:'Guest'}}</h1>
+        <p class="lead">
+            Welcome to <b>SPLASH PaintZone</b>, where automotive dreams come to life through vibrant colors and flawless finishes.
+             Explore our gallery of expertly crafted transformations and embark on a journey to elevate your vehicle's aesthetic to new heights. 
+        </p>
+        <hr class="my-4">
+        <p class="lead">
+            {% if user.is_authenticated %}
+                {% comment %} <a class="btn btn-primary btn-lg" href="{% url 'logout' %}" role="button" style="background-color: #D81324">Logout</a> {% endcomment %}
+            {% else %}
+                <a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Sign in</a>
+            {% endif %}
+        </p>
+    </div>
+
+{% endblock content %}
+
