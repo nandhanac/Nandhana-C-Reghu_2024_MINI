@@ -26,7 +26,7 @@
 				</a>
 			</li>
 			<li class="nav-item">
-				<h3>SPLASH PaintZone</h3>
+				<h3>SplashPaintZone</h3>
 			</li>
 		</ul>
 		<!-- end nav left -->
@@ -74,6 +74,7 @@
 	<!-- sidebar -->
 	<div class="sidebar">
 		<ul class="sidebar-nav">
+
 			<li class="sidebar-nav-item">
 				<a href="/admin-dashboard" class="sidebar-nav-link">
 					<div>
@@ -109,10 +110,24 @@
 					<div>
 						<i class="fas fa-spinner"></i>
 					</div>
-					<span>Appointments</span>
+					<span>Appointment</span>
 				</a>
 			</li>
-
+			{% comment %} <li class="nav-item">
+				<a href="#" class="nav-link ">
+				  <i class="nav-icon fas fa-car"></i>
+				  <p>
+					Services
+					<i class="fas fa-angle-left right"></i>
+					<span class="badge badge-info right"></span>
+				  </p>
+				</a> {% endcomment %}<li  class="sidebar-nav-item">
+				<a href="/admin-services" class="sidebar-nav-link">
+					<div>
+						<i class="nav-icon fas fa-car"></i>
+					</div>
+					<span>services</span>
+				</a></li>
 			<li  class="sidebar-nav-item">
 				<a href="/admin-report" class="sidebar-nav-link">
 					<div>
@@ -120,8 +135,23 @@
 					</div>
 					<span>Report</span>
 				</a>
-			</li> 
-
+			</li>
+			<li  class="sidebar-nav-item">
+				<a href="/admin-report" class="sidebar-nav-link">
+					<div>
+						<i class="nav-icon fas fa-book"></i>
+					</div>
+					<span>Painting Assessment</span>
+				</a>
+			</li>
+			{% comment %} <li class="nav-item">
+			 <a href="usergroup.php" class="nav-link"> 
+				  <i class="nav-icon fas fa-book"></i>
+				  <p>
+				   Painting Assessment
+				  </p>
+				</a>
+			  </li> {% endcomment %}
 			<li  class="sidebar-nav-item">
 				<a href="/admin-feedback" class="sidebar-nav-link">
 					<div>

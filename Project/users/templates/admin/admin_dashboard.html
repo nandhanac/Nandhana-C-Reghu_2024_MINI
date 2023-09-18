@@ -1,9 +1,9 @@
-{% include 'admin/adminbase.html' %}
+{% extends 'admin/adminbase.html' %}
 {% load static %}
 {% block content %}
 
 	<!-- main content -->
-	<div class="wrapper" >
+	<div class="wrapper">
 
 <!-- ****** cards start ********** -->
 		<div class="row">
@@ -31,10 +31,10 @@
 						<i class="fas fa-spinner"></i>
 					</p>
 					<h3>{{total_request}}</h3>
-					<p>Total Appointments</p>
+					<p>Total Appointment</p>
 				</div>
 			</div>
-			<div class="col-3 col-m-6 col-sm-6">
+			 <div class="col-3 col-m-6 col-sm-6">
 				<div class="counter bg-danger">
 					<p>
 						<i class="fas fa-comments"></i>
@@ -43,7 +43,7 @@
 					<p>Total Feedback</p>
 				</div>
 			</div>
-		</div>
+		</div> 
 <!-- ****** cards end ********** -->
 
 
@@ -61,10 +61,10 @@
 							<thead>
 								<tr>
 									<th>Customer Name</th>
-									<th>Car Make</th>
-									{% comment %} <th>Category</th> {% endcomment %}
+									<th>Car Name</th>
+									<th>Category</th>
 									<th>Car Model</th>
-									{% comment %} <th>Vehicle Brand</th> {% endcomment %}
+									<th>Car Brand</th>
 									<th>Problem Description</th>
 								</tr>
 							</thead>
@@ -73,9 +73,9 @@
 								<tr>
 									<td> {{c.get_name}}</td>
 									<td> {{r.vehicle_name}}</td>
-									{% comment %} <td>{{r.category}}</td> {% endcomment %}
+									<td>{{r.category}}</td>
 									<td>{{r.vehicle_model}}</td>
-									{% comment %} <td>{{r.vehicle_brand}}</td> {% endcomment %}
+									<td>{{r.vehicle_brand}}</td>
 									<td>{{r.problem_description}}</td>
 								</tr>
 								{% endfor %}

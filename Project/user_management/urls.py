@@ -9,7 +9,7 @@ from django.contrib.auth import views as auth_views
 from users.views import CustomLoginView, ResetPasswordView, ChangePasswordView
 
 from users.forms import LoginForm
-
+from django.contrib.auth.views import LoginView,LogoutView
 
 from users import views
 urlpatterns = [
@@ -37,10 +37,14 @@ urlpatterns = [
     re_path(r'^oauth/', include('social_django.urls', namespace='social')),
 
 
-     path('admin-dashboard/', views.admin_dashboard_view,name='admin-dashboard'),
-     path('admin-customer', views.admin_customer_view,name='admin-customer'),
-
-     path('admin-view-customer',views.admin_view_customer_view,name='admin-view-customer'),
+# # admin
+path('adminlogin', LoginView.as_view(template_name='admin/adminlogin.html'),name='adminlogin'),
+ path('admin-dashboard', views.admin_dashboard_view,name='admin-dashboard'),
+path('logout', LogoutView.as_view(template_name='admin/adminlogin.html'),name='logout'),
+# # customer
+# path('customer-dashboard', views.customer_dashboard_view,name='customer-dashboard'),
+path('admin-customer', views.admin_customer_view,name='admin-customer'),
+    path('admin-view-customer',views.admin_view_customer_view,name='admin-view-customer'),
     path('delete-customer/<int:pk>', views.delete_customer_view,name='delete-customer'),
     path('update-customer/<int:pk>', views.update_customer_view,name='update-customer'),
     path('admin-add-customer', views.admin_add_customer_view,name='admin-add-customer'),
@@ -78,4 +82,19 @@ urlpatterns = [
     path('admin-report', views.admin_report_view,name='admin-report'),
 
 
+    path('admin-services', views.admin_services_view,name='admin-services'),
+    path('admin-category', views.categories,name='admin-category'),
+path('logout', LogoutView.as_view(template_name='admin/adminlogin.html'),name='logout'),
+    path('mechanic-dashboard/', views.mechanic_dashboard_view,name='mechanic-dashboard'),
+    path('mechanic-work-assigned', views.mechanic_work_assigned_view,name='mechanic-work-assigned'),
+    path('mechanic-update-status/<int:pk>', views.mechanic_update_status_view,name='mechanic-update-status'),
+    path('mechanic-feedback', views.mechanic_feedback_view,name='mechanic-feedback'),
+    path('mechanic-salary', views.mechanic_salary_view,name='mechanic-salary'),
+    path('mechanic-profile', views.mechanic_profile_view,name='mechanic-profile'),
+    path('edit-mechanic-profile', views.edit_mechanic_profile_view,name='edit-mechanic-profile'),
+
+    path('mechanic-attendance', views.mechanic_attendance_view,name='mechanic-attendance'),
+    path('mechanicsclick', views.mechanicsclick_view),
+path('mechanicsignup', views.mechanic_signup_view,name='mechanicsignup'),
+path('mechaniclogin', LoginView.as_view(template_name='Employee/mechaniclogin.html'),name='mechaniclogin'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

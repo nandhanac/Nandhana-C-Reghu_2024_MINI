@@ -41,20 +41,20 @@
 <div>
   <form method="post" style="margin-left:200px;margin-right:200px;">
       {% csrf_token %}
-    <label for="category">Vehicle Category</label>
+    <label for="category">Service Category</label>
     {% render_field enquiry.category class="form-control"  %}<br>
 
-    <label for="vehicle_no">Vehicle Number</label>
-    {% render_field enquiry.vehicle_no class="form-control" placeholder="Vehicle Number" %}
+    <label for="Car_no">Car Number</label>
+    {% render_field enquiry.Car_no class="form-control" placeholder="Vehicle Number" %}
 
-    <label for="vehicle_name">Vehicle Name</label>
-    {% render_field enquiry.vehicle_name class="form-control" placeholder="Vehicle Name" %}
+    <label for="Car_name">Car Name</label>
+    {% render_field enquiry.Car_name class="form-control" placeholder="Vehicle Name" %}
 
-    <label for="vehicle_brand">Vehicle Brand</label>
-    {% render_field enquiry.vehicle_brand class="form-control" placeholder="Vehicle Brand" %}
+    <label for="Car_brand">Car Brand</label>
+    {% render_field enquiry.Car_brand class="form-control" placeholder="Vehicle Brand" %}
 
-    <label for="vehicle_model">Vehicle Model</label>
-    {% render_field enquiry.vehicle_model class="form-control" placeholder="Vehicle Model" %}
+    <label for="Car_model">Car Model</label>
+    {% render_field enquiry.Car_model class="form-control" placeholder="Vehicle Model" %}
 
     <label for="problem_description">Problem Description</label>
     {% render_field enquiry.problem_description class="form-control" placeholder="Problem Description" %}
@@ -65,7 +65,7 @@
     <label for="customer">Customer</label>
     {% render_field adminenquiry.customer class="form-control"  %}
 
-    <label for="mechanic">Employee</label>
+    <label for="mechanic">Mechanic</label>
     {% render_field adminenquiry.mechanic class="form-control"  %}
 
 

@@ -16,8 +16,7 @@
 
     }
     .bg-dark {
-    background-color: #D81324 !important;
-  
+    background-color: #4f55c!important;
 }
     .navbar-brand {
       font-size: 20px;
@@ -32,27 +31,27 @@
 
 
   <div class="bs-example">
-    <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
-      <a href="/" class="navbar-brand" style="color:white;">SPLASH PaintZone</a>
+    <nav class="navbar navbar-expand-md bg-danger navbar-danger fixed-top">
+      <a href="index.html" class="navbar-brand" style="color:yellow;">SplashPaintZone</a>
       <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
         <div class="navbar-nav">
-          <a href="/" class="nav-item nav-link active">Home</a>
+          <a href="index.html" class="nav-item nav-link active">Home</a>
 
           {% comment %} <a href="/customerclick" class="nav-item nav-link">Customer</a> {% endcomment %}
-          {% comment %} <a href="/mechanicsclick" class="nav-item nav-link">Employee</a> {% endcomment %}
-          <a href="/adminclick" class="nav-item nav-link">Admin</a>
+          <a href="/mechanicsclick" class="nav-item nav-link">Mechanics</a>
+          <a href="/adminlogin" class="nav-item nav-link">Admin</a>
 
 
         </div>
 
-        {% comment %} <div class="navbar-nav">
-          <a href="/aboutus" class="nav-item nav-link">About Us</a>
+        <div class="navbar-nav">
+          {% comment %} <a href="/aboutus" class="nav-item nav-link">About Us</a> {% endcomment %}
           <a href="contactus" class="nav-item nav-link">Contact Us</a>
-        </div> {% endcomment %}
+        </div>
 
 
 

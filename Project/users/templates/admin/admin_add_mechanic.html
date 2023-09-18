@@ -35,7 +35,7 @@
 </head>
 
 <br><br><br><br><br>
-<h3 style="text-align:center;">Employee</h3>
+<h3 style="text-align:center;">Employee </h3>
 <div>
   <form method="post"  enctype="multipart/form-data"  style="margin-left:200px;margin-right:200px;">
       {% csrf_token %}
@@ -49,8 +49,8 @@
         <label for="address">Address</label>
         {% render_field mechanicForm.address class="form-control" placeholder="Address" %}
 
-        {% comment %} <label for="skill">Skills</label>
-        {% render_field mechanicForm.skill class="form-control" placeholder="skills" %} {% endcomment %}
+        <label for="skill">Skills</label>
+        {% render_field mechanicForm.skill class="form-control" placeholder="skills" %}
 
         <label for="salary">Salary</label>
         {% render_field mechanicSalary.salary class="form-control" placeholder="salary" %}

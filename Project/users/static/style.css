@@ -59,8 +59,8 @@
 
 body {
 	font-family: 'Roboto', sans-serif;
-	background: var(--main-bg-color);
-	color: var(--main-color);
+	background: var(--second-bg-color);
+	color: var(--dark-second-background);
 	margin: 0;
 }
 
