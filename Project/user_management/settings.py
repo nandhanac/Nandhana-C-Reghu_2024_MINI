@@ -157,6 +157,7 @@ MEDIA_URL = '/media/'
 
 LOGIN_REDIRECT_URL = 'users-home'
 LOGIN_URL = 'login'
+ADMIN_DASHBOARD_REDIRECT_URL='admin-dashboard'
 
 
 # social auth configs for facebook

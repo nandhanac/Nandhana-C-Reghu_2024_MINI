@@ -1,0 +1,114 @@
+{% extends 'vehicle/adminbase.html' %}
+
+{% load widget_tweaks %}
+
+
+
+{% block content %}
+
+<head>
+
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.7.0/dist/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.7.0/dist/js/bootstrap.min.js"></script>
+  <style media="screen">
+    a:link {
+      text-decoration: none;
+    }
+
+    h6 {
+      text-align: center;
+    }
+
+    .row {
+      margin: 100px;
+    }
+
+    .btnSubmit {
+      text-align: center;
+    }
+    .xyz{
+      
+      display: table;
+      margin-right: auto;
+      margin-left: auto;
+            }
+    .sidebar{
+        top:0px;
+    }
+  </style>
+
+</head>
+
+
+
+
+<form class="box xyz"  method="post"  autocomplete="off">
+
+
+    <div class="row">
+
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h6 class="panel-title">Attendance</h6>
+
+        </div>
+
+        <table class="table table-hover" id="dev-table">
+          <thead>
+
+            <tr>
+              <th>Mechanic Name</th>
+              <th>Present/Absent</th>
+            </tr>
+          </thead>
+
+
+          {% csrf_token %}
+          {%for m in mechanics%}
+          <tr>
+            <td>{{m.get_name}}</td>
+            <td>{{aform.present_status}}</td>
+          </tr>
+          {%endfor%}
+
+
+
+        </table>
+        <div class="col-md-12">
+          <div class="form-group">
+         {% render_field aform.date class="form-control" placeholder="Enter Date mm/dd/yyyy" %} 
+        </div>
+
+      </div>
+
+        <input type="submit" style="margin-left: 200px;
+
+    margin-top: 20px;
+    margin-bottom: 20px;    background-color: #ffec00;" name="submit" value="submit">
+      </div>
+
+
+    
+  </div>
+</form>
+
+<!--
+written By : sumit kumar
+facebook : fb.com/sumit.luv
+-->
+
+<script>
+  $(document).ready(function() {
+      // Activate the datepicker
+      $('[type="date"]').datepicker({
+          format: 'mm/dd/yyyy', // Set the desired format here
+          autoclose: true,
+      });
+  });
+</script>
+
+{% endblock content %}

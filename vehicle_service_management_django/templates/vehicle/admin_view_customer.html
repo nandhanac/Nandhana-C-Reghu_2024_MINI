@@ -1,0 +1,134 @@
+{% comment %} {% extends 'vehicle/adminbase.html' %} {% endcomment %}
+{% block content %}
+{% load static %}
+<head>
+	<!-- main content -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css'%}">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="{% static 'plugins/datatables-bs4/css/dataTables.bootstrap4.min.css'%}">
+  <link rel="stylesheet" href="{% static 'plugins/datatables-responsive/css/responsive.bootstrap4.min.css'%}">
+  <link rel="stylesheet" href="{% static 'plugins/datatables-buttons/css/buttons.bootstrap4.min.css'%}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css'%}">
+</head> 
+	<div class="wrapper">
+		<section class="content-header">
+			<div class="container-fluid">
+			  <div class="row mb-2">
+				<div class="col-sm-6">
+				  <h1>Customer Management</h1>
+				</div>
+				<div class="col-sm-6">
+				  <ol class="breadcrumb float-sm-right">
+					<li class="breadcrumb-item"><a href="/admin-dashboard">Home</a></li>
+					<li class="breadcrumb-item "><a href="/admin-customer">Customer Management</a></li>
+					<li class="breadcrumb-item active">View All Customer</li>
+				  </ol>
+				</div>
+			  </div>
+			</div><!-- /.container-fluid -->
+		  </section>
+<!-- ****** table  start ********** -->
+<section class="content">
+	<div class="container-fluid">
+	  <div class="row">
+		<div class="col-12">
+	 
+
+		  <div class="card">
+			<div class="card-header">
+			  <h3 class="card-title">Customer Data</h3> 
+			  <a href="{%url 'admin-add-customer'%}">
+			  <button class="btn btn-success btn-xs" style="margin-left: 74%" data-toggle="modal" data-target="#add"><i class="fa fa-plus"></i> Add Customer</button></a>
+			
+			  <table id="example1" class="table table-bordered table-striped">
+				<thead>
+				<tr>
+                  <th>Name</th>
+                  <th>Car Image</th>
+                  <th>Mobile</th>
+                  <th>Address</th>
+
+                  <th width="7%"></th>
+                </tr>
+							</thead>
+							<tbody>
+              {% for c in customers %}
+                <tr>
+                  <td> {{c.get_name}}</td>
+                  <td> <img src="{% static c.profile_pic.url %}" alt="Profile Pic" height="40px" width="40px" /></td>
+                  <td>{{c.mobile}}</td>
+                  <td>{{c.address}}</td>
+				 
+          
+                  <td><a href="{% url 'update-customer' c.id  %}"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit"><i class="fa fa-edit"></i></button></a> <a href="{% url 'delete-customer' c.id  %}"><button class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button></a></td>
+                </tr>
+                {% endfor %}
+			</tbody>
+                  
+		</table>
+	  
+  </div>
+  <!-- /.col -->
+</div>
+<!-- /.row -->
+</div>
+<!-- /.container-fluid -->
+</section>
+							
+<!-- ****** table start ********** -->
+
+	</div>
+	<!-- jQuery -->
+
+<script src="{% static 'plugins/jquery/jquery.min.js'%}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+<!-- DataTables  & Plugins -->
+<script src="{% static 'plugins/datatables/jquery.dataTables.min.js'%}"></script>
+<script src="{% static 'plugins/datatables-bs4/js/dataTables.bootstrap4.min.js'%}"></script>
+<script src="{% static 'plugins/datatables-responsive/js/dataTables.responsive.min.js'%}"></script>
+<script src="{% static 'plugins/datatables-responsive/js/responsive.bootstrap4.min.js'%}"></script>
+<script src="{% static 'plugins/datatables-buttons/js/dataTables.buttons.min.js'%}"></script>
+<script src="{% static 'plugins/datatables-buttons/js/buttons.bootstrap4.min.js'%}"></script>
+<script src="{% static 'plugins/jszip/jszip.min.js'%}"></script>
+<script src="{% static 'plugins/pdfmake/pdfmake.min.js'%}"></script>
+<script src="{% static 'plugins/pdfmake/vfs_fonts.js'%}"></script>
+<script src="{% static 'plugins/datatables-buttons/js/buttons.html5.min.js'%}"></script>
+<script src="{% static 'plugins/datatables-buttons/js/buttons.print.min.js'%}"></script>
+<script src="{% static 'plugins/datatables-buttons/js/buttons.colVis.min.js'%}"></script>
+<script src="{% static 'plugins/bs-custom-file-input/bs-custom-file-input.min.js'%}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'dist/js/adminlte.min.js'%}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{% static 'dist/js/demo.js'%}"></script>
+<!-- Page specific script -->
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": [""]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
+<script>
+$(function () {
+  bsCustomFileInput.init();
+});
+</script>
+{% comment %} {% endblock content %}  {% endcomment %}
+</body>
+</html>
+	<!-- end main content -->
+{% endblock content %}

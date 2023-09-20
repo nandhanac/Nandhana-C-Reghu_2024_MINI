@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+{%load static %}
+{% load widget_tweaks %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+
+
+
+
+    <style media="screen">
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            background-image: url('{% static "images/carousel-bg-1.jpg" %}');
+        }
+
+        .box {
+            width: 500px;
+            padding: 40px;
+            position: absolute;
+            top: 50%;
+            left: 30%;
+            background: white;
+            border-radius: 10px;
+            text-align: center;
+            transition: 0.25s;
+            margin-top: -280px
+        }
+
+.box input[type="text"],
+.box input[type="password"] {
+    border: 0;
+    background: none;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    border: 2px solid #3498db;
+    padding: 10px 10px;
+    width: 250px;
+    outline: none;
+    color: black;
+    border-radius: 10px;
+    transition: 0.25s
+}
+
+.box h1 {
+    color: black;
+    text-transform: uppercase;
+    font-weight: 500
+}
+
+.box input[type="text"]:focus,
+.box input[type="password"]:focus {
+    width: 300px;
+    border-color: #2ecc71
+}
+
+.box input[type="submit"] {
+    border: 0;
+    background: none;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    border: 2px solid #2ecc71;
+    padding: 14px 40px;
+    outline: none;
+    color: black;
+    border-radius: 10px;
+    transition: 0.25s;
+    cursor: pointer
+}
+
+.box input[type="submit"]:hover {
+    background: #2ecc71
+}
+
+.forgot {
+    text-decoration: underline
+}
+.form-label {
+    color:rgb(60, 60, 60);
+    font-weight: bold;
+    margin-left: -200px;
+    
+  }
+  hr.new {
+    border: 1px solid #3498db;
+  }
+  .text-danger {
+    color: red;        
+    font-size: 10px;   /* Adjust the font size as needed */
+    margin-top: 5px; 
+   
+}
+    </style>
+  </head>
+  <body>
+  
+    <div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <form class="box" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                    <h1>Mechanic SIGNUP</h1>
+                    <hr class='new'>
+                    <p class="text-muted"> Please enter your details to create account !</p>
+                    <div class="form-group">
+                        <label for="id_first_name" class="form-label">First name</label>
+                      {% render_field userForm.first_name class="form-control" placeholder=" Enter First Name" %}
+                      <div id="first-name-error" class="text-danger"></div> 
+                    </div>
+                    <div class="form-group">
+                        <label for="id_last_name" class="form-label">Last Name</label>
+                        {% render_field userForm.last_name class="form-control" placeholder=" EnterLast Name" %}
+                        <div id="last-name-error" class="text-danger"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_address" class="form-label">Address</label>
+                        {% render_field mechanicForm.address class="form-control" placeholder=" Enter Address" %}
+                        <div id="address-error" class="text-danger"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="id_mobile" class="form-label">Mobile</label>
+                          {% render_field mechanicForm.mobile class="form-control" placeholder=" Enter Mobile" %}
+                          <div id="mobile-error" class="text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_job_title" class="form-label">Job Title</label><br>
+                            {% render_field mechanicForm.job_title class="form-control" placeholder="Enter Skills" %}
+                            <div id="job-title-error" class="text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_skill" class="form-label">Skill</label>
+                          {% render_field mechanicForm.skill class="form-control" placeholder="Enter Skills" %}
+                          <div id="skill-error" class="text-danger"></div>
+                        </div>
+                          <div class="form-group">
+                            <label for="id_username" class="form-label">Username</label>
+                          {% render_field userForm.username class="form-control" placeholder="Enter Username" %}
+                          <div id="username-error" class="text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_password1" class="form-label">Password</label>
+                            {% render_field userForm.password class="form-control" placeholder="Enter Password" %}
+                            <div id="password-error" class="text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_profile_pic" class="form-label">Profile</label><br></br>
+                                  {% render_field mechanicForm.profile_pic class="form-control" placeholder="Profile pic" %}
+                                  <div id="profile_pic-error" class="text-danger"></div>
+                                </div>
+                                <div class="form-group">
+                     <input type="submit" name="" value="Create">
+                                </div>
+                                <div class="form-group">
+                                    <p>Already have an account? <a href="{% url 'mechaniclogin' %}" class="btn btn-link">Sign In</a></p>
+                                  </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<br><br>
+  </body>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+{% load static %}
+{% load widget_tweaks %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+
+    <style media="screen">
+      body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background-image: url('{% static "images/carousel-bg-1.jpg" %}');
+}
+
+.box {
+    width: 500px;
+    padding: 40px;
+    position: absolute;
+    top: 50%;
+    left: 30%;
+    background: white;
+    border-radius: 10px;
+    text-align: center;
+    transition: 0.25s;
+    margin-top: -280px
+}
+.box input[type="text"],
+.box input[type="password"] {
+    border: 0;
+    background: none;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    border: 2px solid #3498db;
+    padding: 10px 10px;
+    width: 250px;
+    outline: none;
+    color: black;
+    border-radius: 5px;
+    transition: 0.25s
+}
+
+.box h1 {
+    color: black;
+    text-transform: uppercase;
+    font-weight: 500
+}
+
+.box input[type="text"]:focus,
+.box input[type="password"]:focus {
+    width: 300px;
+    border-color: #2ecc71
+}
+
+.box input[type="submit"] {
+    border: 0;
+    background: none;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    border: 2px solid #2ecc71;
+    padding: 14px 40px;
+    outline: none;
+    color: black;
+    border-radius: 24px;
+    transition: 0.25s;
+    cursor: pointer
+    background-color: #3498db;
+}
+
+.box input[type="submit"]:hover {
+    background: #2ecc71
+}
+
+.forgot {
+    text-decoration: underline
+}
+.form-label {
+    color:rgb(60, 60, 60);
+    font-weight: bold;
+    margin-left: -200px;
+    
+  }
+  hr.new {
+    border: 1px solid #3498db;
+  }
+  .text-danger {
+    color: red;        
+    font-size: 10px;   /* Adjust the font size as needed */
+    margin-top: 5px; 
+   
+}
+    </style>
+  </head>
+  <body>
+   
+    <div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <form class="box" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                    <h1>CUSTOMER SIGNUP</h1>
+                    <hr class='new'>
+                    <br><br>
+                    <div class="form-group">
+                    <label for="id_first_name" class="form-label">First name</label>
+                      {% render_field userForm.first_name class="form-control" placeholder="First Name" %}
+                      <div id="first-name-error" class="text-danger"></div> 
+                    </div>
+                    <div class="form-group">
+                      <label for="id_last_name" class="form-label">Last Name</label>
+                        {% render_field userForm.last_name class="form-control" placeholder="Last Name" %}
+                        <div id="last-name-error" class="text-danger"></div>
+                    </div>
+                        <div class="form-group">
+                        <label for="id_username" class="form-label">Username</label>
+                          {% render_field userForm.username class="form-control" placeholder="Username" %}
+                          <div id="username-error" class="text-danger"></div>
+                        </div>
+                          <div class="form-group">
+                          <label for="id_password1" class="form-label">Password</label>
+                            {% render_field userForm.password class="form-control" placeholder="Password" %}
+                            <div id="password-error" class="text-danger"></div>
+                        </div>
+                            <div class="form-group">
+                            <label for="id_address" class="form-label">Address</label>
+                              {% render_field customerForm.address class="form-control" placeholder="Address" %}
+                              <div id="address-error" class="text-danger"></div>
+                            </div>
+                              <div class="form-group">
+                              <label for="id_mobile" class="form-label">Mobile</label>
+                                {% render_field customerForm.mobile class="form-control" placeholder="Mobile" %}
+                                <div id="mobile-error" class="text-danger"></div>
+                            </div>
+                                <div class="form-group">
+                                <label for="id_car_image" class="form-label">Car Image</label><br></br>
+                                  {% render_field customerForm.profile_pic class="form-control" placeholder="Profile pic" %}
+                                  <div id="car-image-error" class="text-danger"></div>
+                                </div>
+                                <div class="form-group">
+                     <input type="submit" name="" value="Create">
+                                </div>
+                                <div class="form-group">
+                                    <p>Already have an account? <a href="{% url 'customerlogin' %}" class="btn btn-link">Sign In</a></p>
+                                  </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<br><br><br><br>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Function to validate First Name
+        function validateFirstName() {
+            var firstName = $('#id_first_name').val();
+            if (firstName.length < 2) {
+                $('#first-name-error').text('First name should be at least 2 characters').show();
+                return false;
+            } else {
+                $('#first-name-error').hide();
+                return true;
+            }
+        }
+
+        // Trigger validation function on input change
+        $('#id_first_name').on('input', validateFirstName);
+
+        function validateLastName() {
+            var lastName = $('#id_last_name').val().trim(); // Remove leading/trailing whitespace
+            if (lastName.length < 2) {
+                $('#last-name-error').text('Last Name should be at least 2 characters').show();
+                return false;
+            } else {
+                $('#last-name-error').hide();
+                return true;
+            }
+        }
+    
+        // Trigger validation function on input change
+        $('#id_last_name').on('input', validateLastName);
+        function validateUsername() {
+            var username = $('#id_username').val().trim(); // Remove leading/trailing whitespace
+            var usernamePattern = /^[A-Za-z0-9-@]{7}$/; // Regular expression pattern
+            if (!username.match(usernamePattern)) {
+                $('#username-error').text('Username should be 7 characters with letters, @').show();
+                return false;
+            } else {
+                $('#username-error').hide();
+                return true;
+            }
+        }
+    
+        // Trigger validation function on input change
+        $('#id_username').on('input', validateUsername);
+
+        function validatePassword() {
+            var password = $('#id_password1').val();
+            var hasUppercase = /[A-Z]/.test(password);
+            var hasLowercase = /[a-z]/.test(password);
+            var hasDigit = /\d/.test(password);
+            var hasSpecialChar = /[!@#$%^&*]/.test(password);
+            var isLengthValid = password.length >= 2;
+    
+            if (hasUppercase && hasLowercase && hasDigit && hasSpecialChar && isLengthValid) {
+                $('#password-error').hide();
+                return true;
+            } else {
+                $('#password-error').text('Password should be at least 8 characters and include one uppercase letter, one lowercase letter, one digit, and one special character (!@#$%^&*)').show();
+                return false;
+            }
+        }
+    
+        // Trigger validation function on input change
+        $('#id_password1').on('input', validatePassword);
+    
+        // Trigger validation function on input change
+        $('#id_password1').on('input', validatePassword);
+
+        function validateAddress() {
+            var address = $('#id_address').val();
+            if (address.trim() === '') {
+                $('#address-error').text('Address cannot be empty').show();
+                return false;
+            } else {
+                $('#address-error').hide();
+                return true;
+            }
+        }
+    
+        // Trigger validation function on input change
+        $('#id_address').on('input', validateAddress);
+        function validateMobile() {
+            var mobile = $('#id_mobile').val();
+            var mobileRegex = /^\+91[1-9]\d{9}$/; // Regex for Indian mobile numbers
+    
+            if (mobileRegex.test(mobile)) {
+                $('#mobile-error').hide();
+                return true;
+            } else {
+                $('#mobile-error').text('Invalid Indian mobile number (e.g., +919876543210)').show();
+                return false;
+            }
+        }
+    
+        // Trigger validation function on input change
+        $('#id_mobile').on('input', validateMobile);
+        function validateCarImage() {
+            var carImageInput = $('#id_car_image');
+            var carImageError = $('#car-image-error');
+            var allowedFormats = ['image/jpeg', 'image/jpg', 'image/png'];
+    
+            if (carImageInput[0].files.length > 0) {
+                var selectedFormat = carImageInput[0].files[0].type;
+    
+                if (allowedFormats.includes(selectedFormat)) {
+                    carImageError.hide();
+                    return true;
+                } else {
+                    carImageError.text('Please select a valid JPG or PNG image.').show();
+                    carImageInput.val(''); // Clear the file input
+                    return false;
+                }
+            } else {
+                carImageError.hide();
+                return true; // No file selected, so no validation needed
+            }
+        }
+    
+        // Trigger validation function when a file is selected
+        $('#id_car_image').on('change', validateCarImage);
+    });
+</script>
+
+  </body>
+</html> 
+ 

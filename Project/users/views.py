@@ -4,7 +4,7 @@ from django.contrib.auth.views import LoginView, PasswordResetView, PasswordChan
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views import View
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,user_passes_test
 
 from .forms import RegisterForm, LoginForm, UpdateUserForm, UpdateProfileForm
 from . import forms,models
@@ -115,6 +115,21 @@ def profile(request):
 
 # admin
 
+
+def is_mechanic(user):
+    return user.groups.filter(name='MECHANIC').exists()
+
+
+def afterlogin_view(request):
+    if is_mechanic(request.user):
+        accountapproval=models.Mechanic.objects.all().filter(user_id=request.user.id,status=True)
+        if accountapproval:
+            return redirect('mechanic-dashboard')
+        else:
+            return render(request,'Employee/mechanic_wait_for_approval.html')
+    else:
+        return redirect('admin-dashboard')
+
 @login_required(login_url='adminlogin')
 def admin_dashboard_view(request):
     enquiry=models.Request.objects.all().order_by('-id')
@@ -126,7 +141,7 @@ def admin_dashboard_view(request):
     'total_customer':models.User.objects.filter(is_superuser=False).count(),
     'total_mechanic':models.Mechanic.objects.all().count(),
     'total_request':models.Request.objects.all().count(),
-    #  'total_feedback':models.Feedback.objects.all().count(),
+    'total_feedback':models.Feedback.objects.all().count(),
     'data':zip(customers,enquiry),
     }
     return render(request,'admin/admin_dashboard.html',context=dict)
@@ -139,9 +154,11 @@ def admin_customer_view(request):
 def admin_view_customer_view(request):
     customers=models.Customer.objects.all()
     user=User.objects.filter(is_superuser=False)
+    mechanic=User.objects.filter(mechanic=False)
     context = {
          'customers' : customers,
-         'user' : user
+         'user' : user,
+         'mechanic':mechanic
      }
     return render(request,'admin/admin_view_customer.html',context)
 
@@ -480,10 +497,10 @@ def admin_view_attendance_view(request):
             attendancedata=models.Attendance.objects.all().filter(date=date)
             mechanicdata=models.Mechanic.objects.all().filter(status=True)
             mylist=zip(attendancedata,mechanicdata)
-            return render(request,'vehicle/admin_view_attendance_page.html',{'mylist':mylist,'date':date})
+            return render(request,'admin/admin_view_attendance_page.html',{'mylist':mylist,'date':date})
         else:
             print('form invalid')
-    return render(request,'vehicle/admin_view_attendance_ask_date.html',{'form':form})
+    return render(request,'admin/admin_view_attendance_ask_date.html',{'form':form})
 
 @login_required(login_url='adminlogin')
 def admin_report_view(request):
@@ -524,8 +541,8 @@ def category(request):
 #  Employee
 
 
-@login_required(login_url='mechaniclogin')
-
+# @login_required(login_url='mechaniclogin')
+# @user_passes_test(is_mechanic)
 def mechanic_dashboard_view(request):
     mechanic=models.Mechanic.objects.get(user_id=request.user.id)
     work_in_progress=models.Request.objects.all().filter(mechanic_id=mechanic.id,status='Repairing').count()
@@ -539,6 +556,7 @@ def mechanic_dashboard_view(request):
     'mechanic':mechanic,
     }
     return render(request,'Employee/mechanic_dashboard.html',context=dict)
+
 
 @login_required(login_url='mechaniclogin')
 
@@ -641,8 +659,8 @@ def mechanic_signup_view(request):
     return render(request,'Employee/mechanicsignup.html',context=mydict)
 def mechanicsclick_view(request):
     if request.user.is_authenticated:
-        # return HttpResponseRedirect('afterlogin')
-        return render(request,'Employee/mechanicsclick.html')
+        return HttpResponseRedirect('afterlogin')
+    return render(request,'Employee/mechanicsclick.html')
 
 # def admin_dashboard_view(request):
 #     enquiry=models.Request.objects.all().order_by('-id')
