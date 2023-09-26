@@ -8,13 +8,13 @@ from vehicle import views
 from django.contrib.auth.views import LoginView,LogoutView
 from vehicle.views import ResetPasswordView, ChangePasswordView
 from django.contrib.auth import views as auth_views
-
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 path('', include('vehicle.urls')),
-    path('',views.home_view,name=''),
-
+    path('',views.home_view,name='home'),
+path('service',views.service,name='service'),
     path('adminclick', views.adminclick_view),
     path('customerclick', views.customerclick_view),
     path('mechanicsclick', views.mechanicsclick_view),
@@ -35,14 +35,26 @@ path('', include('vehicle.urls')),
     path('customersignup', views.customer_signup_view,name='customersignup'),
     path('mechanicsignup', views.mechanic_signup_view,name='mechanicsignup'),
 
+    
+
     path('customerlogin', LoginView.as_view(template_name='vehicle/customerlogin.html'),name='customerlogin'),
     path('mechaniclogin', LoginView.as_view(template_name='vehicle/mechaniclogin.html'),name='mechaniclogin'),
     path('adminlogin', LoginView.as_view(template_name='vehicle/adminlogin.html'),name='adminlogin'),
 
+ path('admin-service', views.admin_service_view,name='admin-service'),
+path('admin-category', views.admin_category_view,name='admin-category'),
+path('update-category/<int:category_id>/', views.update_category, name='update-category'),
+path('delete-category/<int:category_id>/', views.delete_category, name='delete-category'),
+path('admin_subcategory_view', views.admin_subcategory_view, name='admin_subcategory_view'),
+path('update_subcategory/<int:subcategory_id>/', views.update_subcategory, name='update-subcategory'),
+path('delete_subcategory/<int:subcategory_id>/', views.delete_subcategory, name='delete-subcategory'),
+path('admin_subsubcategory_view', views.admin_subsubcategory_view, name='admin_subsubcategory_view'),
+ path('update-subsubcategory/<int:subsubcategory_id>/', views.update_subsubcategory_view, name='update-subsubcategory'),
+path('delete-subsubcategory/<int:subsubcategory_id>/', views.delete_subsubcategory_view, name='delete-subsubcategory'),
+
 
 
     path('admin-dashboard', views.admin_dashboard_view,name='admin-dashboard'),
-
     path('admin-customer', views.admin_customer_view,name='admin-customer'),
     path('admin-view-customer',views.admin_view_customer_view,name='admin-view-customer'),
     path('delete-customer/<int:pk>', views.delete_customer_view,name='delete-customer'),
@@ -111,4 +123,5 @@ path('', include('vehicle.urls')),
 
     path('aboutus', views.aboutus_view),
     path('contactus', views.contactus_view),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

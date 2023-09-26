@@ -72,36 +72,32 @@
           <tr>
             <td>{{m.get_name}}</td>
             <td>{{aform.present_status}}</td>
+            
           </tr>
+         
+  
           {%endfor%}
 
 
 
         </table>
-        <div class="col-md-12">
-          <div class="form-group">
-         {% render_field aform.date class="form-control" placeholder="Enter Date mm/dd/yyyy" %} 
-        </div>
+      </table>
+      
+      {% render_field aform.date  class="form-control" placeholder="Enter Date mm/dd/yyyy" %} 
+      <input type="submit" style="margin-left: 200px;
 
-      </div>
-
-        <input type="submit" style="margin-left: 200px;
-
-    margin-top: 20px;
-    margin-bottom: 20px;    background-color: #ffec00;" name="submit" value="submit">
-      </div>
+  margin-top: 20px;
+  margin-bottom: 20px;    background-color: #ffec00;" name="submit" value="submit">
+    </div>
 
 
-    
-  </div>
+  
+</div>
 </form>
 
-<!--
-written By : sumit kumar
-facebook : fb.com/sumit.luv
--->
 
-<script>
+
+ {% comment %} <script>
   $(document).ready(function() {
       // Activate the datepicker
       $('[type="date"]').datepicker({
@@ -109,6 +105,5 @@ facebook : fb.com/sumit.luv
           autoclose: true,
       });
   });
-</script>
-
+</script>  {% endcomment %}
 {% endblock content %}

@@ -1,0 +1,176 @@
+{% extends 'vehicle/adminbase.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block content %}
+<head>
+  <style media="screen">
+    /* Your existing CSS styles */
+    input[type=text], select, input[type=number], input[type=password], textarea {
+        width: 400px;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+  
+      input[type=submit] {
+        width: 100%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+  
+      input[type=submit]:hover {
+        background-color: #45a049;
+      }
+  
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+  
+      table, th, td {
+        border: 1px solid #ddd;
+      }
+  
+      th, td {
+        padding: 8px;
+        text-align: left;
+      }
+  
+      th {
+        background-color: #f2f2f2;
+      }
+    .container {
+      display: flex;
+      justify-content: space-between;
+    }
+    .form-container {
+      width: 30%;
+    }
+    .table-container {
+      width: 45%;
+      margin-left:300px;margin-right:50px;
+    }
+    /* Style for Edit and Delete buttons */
+    .btn-edit {
+        background-color: #007BFF;
+        color: white;
+        padding: 6px 12px;
+        border: none;
+        border-radius: 4px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        cursor: pointer;
+        margin-right: 5px;
+    }
+    .btn-edit:hover {
+        background-color: #0056b3;
+    }
+    .btn-delete {
+        background-color: #DC3545;
+        color: white;
+        padding: 6px 12px;
+        border: none;
+        border-radius: 4px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        cursor: pointer;
+    }
+    .btn-delete:hover {
+        background-color: #ba303c;
+    }
+    /* CSS styles for images in the table */
+table#subsubcategoryTable img {
+    
+    border: 1px solid #ccc; /* Add a border to the images */
+    margin: 5px; /* Add margin around the images */
+}
+
+  </style>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+</head>
+
+<br><br><br><br><br>
+<h3 style="text-align:center;">Manage Subcategories </h3>
+
+<!-- Container for Form and Table -->
+<div class="container">
+  <!-- Form to Create a Subcategory -->
+  <div class="form-container">
+    <form method="post" enctype="multipart/form-data" style="margin-left: 300px; margin-right: 10px;">
+      {% csrf_token %}
+      {{ subsubcategory_form.as_p }}
+      <input type="submit" value="Create Subsubcategory">
+  </form>
+  
+  </div>
+
+  <!-- Display Table of Subcategories using DataTables -->
+  <div class="table-container">
+    <table id="subsubcategoryTable" class="display">
+      <thead>
+        <tr>
+          <th>Subsubcategory Name</th>
+          <th>SubCategory Name</th>
+          <th>Category Name</th>
+          <th>Image</th>
+          <th>Descriptions</th>
+          <th>Price</th>
+          <th>Time</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for subsubcategory in subsubcategories %}
+          <tr>
+            <td>{{ subsubcategory.name }}</td>
+            <td>{{ subsubcategory.subcategory.name }}</td>
+            <td>{{ subsubcategory.subcategory.category.name }}</td>
+            <td>{% if subsubcategory.image %}
+              <img src="{{ subsubcategory.image.url }}" alt="{{ subsubcategory.name }}"height="40px" width="40px"> 
+            {% endif %}</td>
+            <td>{{ subsubcategory.description }}</td>
+            <td>{{ subsubcategory.price}}</td>
+            <td>{{ subsubcategory.hours_taken}}</td>
+            
+            <td>
+            <a href="{% url 'update-subsubcategory' subsubcategory.id %}"> 
+                <button class="btn btn-primary btn-xs">
+                  <i class="fa fa-edit"></i>
+                </button>
+              </a>
+               <a href="{% url 'delete-subsubcategory' subsubcategory.id %}"> 
+                <button class="btn btn-danger btn-xs">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+<script>
+  $(document).ready(function() {
+    // Initialize DataTable
+    $('#subsubcategoryTable').DataTable();
+  });
+</script>
+
+{% endblock content %}

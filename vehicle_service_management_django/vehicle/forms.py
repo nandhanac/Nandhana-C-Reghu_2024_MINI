@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from . import models
-
+from .models import Category,Subcategory,SubSubcategory
 class CustomerUserForm(forms.ModelForm):
     class Meta:
         model=User
@@ -79,18 +79,10 @@ class FeedbackForm(forms.ModelForm):
 presence_choices=(('Present','Present'),('Absent','Absent'))
 class AttendanceForm(forms.Form):
     present_status=forms.ChoiceField( choices=presence_choices)
-    date = forms.DateField(
-        widget=forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'Enter Date mm/dd/yyyy', 'type': 'date'}),
-        input_formats=['%m/%d/%Y'],  # Specify the input format here
-        help_text='Enter Date mm/dd/yyyy',
-    )
-
+    date=forms.DateField()
 class AskDateForm(forms.Form):
-    date = forms.DateField(
-        widget=forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'Enter Date mm/dd/yyyy', 'type': 'date'}),
-        input_formats=['%m/%d/%Y'],  # Specify the input format here
-        help_text='Enter Date mm/dd/yyyy',
-    )
+    date = forms.DateField()
+       
 
 
 #for contact us page
@@ -98,3 +90,46 @@ class ContactusForm(forms.Form):
     Name = forms.CharField(max_length=30)
     Email = forms.EmailField()
     Message = forms.CharField(max_length=500,widget=forms.Textarea(attrs={'rows': 3, 'cols': 30}))
+
+# category
+
+
+
+class CategoryForm(forms.ModelForm):
+    
+    class Meta:
+        model = Category
+        fields = '__all__'
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Category Name'}),
+            # 'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Category Description'}),
+        }
+class SubcategoryForm(forms.ModelForm):
+    # Add a category field to select the associated category
+    category = forms.ModelChoiceField(queryset=None, empty_label="Select a Category", widget=forms.Select(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = Subcategory
+        fields = ['name', 'category']  # Include the 'category' field in the form
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Subcategory Name'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Set the queryset for the category field to display existing categories
+        self.fields['category'].queryset = Category.objects.all()
+class SubSubcategoryForm(forms.ModelForm):
+    # Add fields for image, description, price, and hours taken
+    image = forms.ImageField(required=False, widget=forms.ClearableFileInput(attrs={'class': 'form-control'}))
+    description = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}))
+    price = forms.DecimalField(required=False, max_digits=10, decimal_places=2, widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Price'}))
+    hours_taken = forms.IntegerField(required=False, widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Hours Taken'}))
+
+    class Meta:
+        model = SubSubcategory
+        fields = ['name', 'subcategory', 'image', 'description', 'price', 'hours_taken']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'SubSubcategory Name'}),
+            'subcategory': forms.Select(attrs={'class': 'form-control'}),
+        }

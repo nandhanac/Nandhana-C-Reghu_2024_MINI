@@ -70,3 +70,29 @@ class Feedback(models.Model):
     date=models.DateField(auto_now=True)
     by=models.CharField(max_length=40)
     message=models.CharField(max_length=500)
+
+# category
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+    # description = models.TextField()
+
+    def __str__(self):
+        return self.name
+class Subcategory(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE,null=True)
+    name = models.CharField(max_length=100)
+    # description = models.TextField()
+
+    def __str__(self):
+        return self.name
+class SubSubcategory(models.Model):
+    name = models.CharField(max_length=100)
+    subcategory = models.ForeignKey(Subcategory, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE,null=True)
+    image = models.ImageField(upload_to='subsubcategories/', null=True, blank=True)  # Add an image field
+    description = models.TextField(null=True, blank=True)  # Add a description field
+    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)  # Add a price field
+    hours_taken = models.PositiveIntegerField(null=True, blank=True)  # Add hours taken field
+    
+    def __str__(self):
+        return self.name

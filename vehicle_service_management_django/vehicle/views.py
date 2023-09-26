@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect,reverse
+from django.shortcuts import render,redirect,reverse,get_object_or_404
 from . import forms,models
 from django.db.models import Sum
 from django.contrib.auth.models import Group
@@ -10,13 +10,20 @@ from django.db.models import Q
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.contrib.auth.views import  PasswordResetView, PasswordChangeView
+
+from .models import Category,Subcategory,SubSubcategory
+from .forms import CategoryForm,SubcategoryForm,SubSubcategoryForm
+
 def home_view(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect('afterlogin')
     return render(request,'vehicle/index.html')
 def home(request):
-    return render(request, 'Password/home.html')
-
+    return render(request, 'vehicle/customerpage.html')
+def about(request):
+    return render(request, 'website/about.html')
+def service(request):
+    return render(request, 'website/service.html')
 #for showing signup/login button for customer
 def customerclick_view(request):
     if request.user.is_authenticated:
@@ -132,6 +139,134 @@ def admin_dashboard_view(request):
     'data':zip(customers,enquiry),
     }
     return render(request,'vehicle/admin_dashboard.html',context=dict)
+#  service
+@login_required(login_url='adminlogin')
+def admin_service_view(request):
+    return render(request,'vehicle/admin_service.html')
+@login_required(login_url='adminlogin')
+def admin_category_view(request):
+    categories = Category.objects.all()
+
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('admin-category')
+    else:
+        form = CategoryForm()
+
+    return render(request, 'vehicle/admin_category.html', {'categories': categories, 'form': form})
+
+
+
+# Edit view
+@login_required(login_url='adminlogin')
+def update_category(request, category_id):
+    category = get_object_or_404(Category, pk=category_id)
+    
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            return redirect('admin-category')
+    else:
+        form = CategoryForm(instance=category)
+    
+    return render(request, 'vehicle/update_category.html', {'form': form})
+
+# Delete view
+@login_required(login_url='adminlogin')
+def delete_category(request, category_id):
+    category = get_object_or_404(Category, pk=category_id)
+    
+    # if request.method == 'POST':
+    category.delete()
+    return redirect('admin-category')
+    
+    # return render(request, 'vehicle/admin_category.html', {'category': category})
+
+@login_required(login_url='adminlogin')
+def admin_subcategory_view(request):
+    # category = get_object_or_404(Category, pk=category_id)
+    subcategories = Subcategory.objects.all()
+
+    if request.method == 'POST':
+        print("got")
+        subcategory_form = SubcategoryForm(request.POST)
+        print(subcategory_form)
+        if subcategory_form.is_valid():
+         subcategory = subcategory_form.save(commit=False)
+         subcategory.save()
+         print("Saved")
+         return redirect('admin_subcategory_view')
+        else:
+         print('Form Errors:', subcategory_form.errors)
+    else:
+        print('Wrong')
+        subcategory_form = SubcategoryForm()
+
+    return render(request, 'vehicle/admin_subcategory.html', { 'subcategories': subcategories, 'subcategory_form': subcategory_form})
+def update_subcategory(request, subcategory_id):
+    subcategory = get_object_or_404(Subcategory, pk=subcategory_id)
+
+    if request.method == 'POST':
+        subcategory_form = SubcategoryForm(request.POST, instance=subcategory)
+        if subcategory_form.is_valid():
+            subcategory_form.save()
+            return redirect('admin_subcategory_view')
+    else:
+        subcategory_form = SubcategoryForm(instance=subcategory)
+
+    return render(request, 'vehicle/update_subcategory.html', {'subcategory_form': subcategory_form})
+
+def delete_subcategory(request, subcategory_id):
+    subcategory = get_object_or_404(Subcategory, pk=subcategory_id)
+    subcategory.delete()
+    return redirect('admin_subcategory_view')
+@login_required(login_url='adminlogin')
+def admin_subsubcategory_view(request):
+    # subcategory = get_object_or_404(Subcategory, pk=subcategory_id)
+    subsubcategories = SubSubcategory.objects.all()
+
+    if request.method == 'POST':
+        subsubcategory_form = SubSubcategoryForm(request.POST, request.FILES)
+        if subsubcategory_form.is_valid():
+            subsubcategory = subsubcategory_form.save(commit=False)
+            # subsubcategory.subcategory = subcategory
+            subsubcategory.save()
+            print("Saved")
+            return redirect('admin_subsubcategory_view')
+        else:
+         print('Form Errors:', subsubcategory_form.errors)
+    else:
+        print('Wrong')
+        subsubcategory_form = SubSubcategoryForm()
+
+    return render(request, 'vehicle/admin_subsubcategory.html', { 'subsubcategories': subsubcategories, 'subsubcategory_form': subsubcategory_form })
+@login_required(login_url='adminlogin')
+def update_subsubcategory_view(request, subsubcategory_id):
+    subsubcategory = get_object_or_404(SubSubcategory, id=subsubcategory_id)
+    
+    if request.method == 'POST':
+        subsubcategory_form = SubSubcategoryForm(request.POST, request.FILES, instance=subsubcategory)
+        if subsubcategory_form.is_valid():
+            subsubcategory_form.save()
+            return redirect('admin_subsubcategory_view')
+    else:
+        subsubcategory_form = SubSubcategoryForm(instance=subsubcategory)
+    
+    return render(request, 'vehicle/update_subsubcategory.html', {'subsubcategory_form': subsubcategory_form, 'subsubcategory': subsubcategory})     
+
+@login_required(login_url='adminlogin')
+def delete_subsubcategory_view(request, subsubcategory_id):
+    subsubcategory = get_object_or_404(SubSubcategory, id=subsubcategory_id)
+    
+    if request.method == 'POST':
+        subsubcategory.delete()
+        return redirect('admin_subsubcategory_view')
+    
+    return render(request, 'vehicle/delete_subsubcategory.html', {'subsubcategory': subsubcategory})
+
 
 
 @login_required(login_url='adminlogin')
@@ -455,7 +590,6 @@ def admin_take_attendance_view(request):
             date=form.cleaned_data['date']
             for i in range(len(Attendances)):
                 AttendanceModel=models.Attendance()
-                
                 AttendanceModel.date=date
                 AttendanceModel.present_status=Attendances[i]
                 print(mechanics[i].id)

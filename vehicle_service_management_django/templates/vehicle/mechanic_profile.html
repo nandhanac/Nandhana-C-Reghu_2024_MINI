@@ -1,4 +1,5 @@
-{% extends 'vehicle/mechanicbase.html' %}
+
+ {% extends 'vehicle/mechanicbase.html' %}
 {% load static %}
 {% block content %}
 <head>
@@ -14,13 +15,13 @@
   .button {
   display: inline-block;
   border-radius: 4px;
-  background-color: #f4511e;
+  background-color: #4CAF50;
   border: none;
   color: #FFFFFF;
   text-align: center;
   font-size: 28px;
   padding: 20px;
-  width: 200px;
+  width: 300px;
   transition: all 0.5s;
   cursor: pointer;
   margin: 5px;
@@ -67,19 +68,31 @@
 
 <br><br><br><br><br>
 <div class="center">
-  <img style="width:200px; height:200px; margin-left:200px;" src="{%static mechanic.profile_pic.url%}" alt="">
-  <div class="w3-panel w3-blue">
-    <h3 class="w3-text-orange" style="text-shadow:1px 1px 0 #444"><b>Name : {{mechanic}}</b></h3>
-    <h3 class="w3-text-orange" style="text-shadow:1px 1px 0 #444"><b>Mobile : {{mechanic.mobile}}</b></h3>
-    <h3 class="w3-text-orange" style="text-shadow:1px 1px 0 #444"><b>Address : {{mechanic.job_title}}</b></h3>
-    <h3 class="w3-text-orange" style="text-shadow:1px 1px 0 #444"><b>Skill : {{mechanic.skill}}</b></h3>
-    <h3 class="w3-text-orange" style="text-shadow:1px 1px 0 #444"><b>Address : {{mechanic.address}}</b></h3>
+  <div class="card">
+        <div class="card-block">
+          <div class="d-flex align-items-center justify-content-center flex-column">
+            <div class="w-50 p-3">
+              <img style="width:200px; height:200px; margin-left:350px;" src="{%static mechanic.profile_pic.url%}" alt="profile image"
+              class="img-fluid rounded-circle">
+              </div>
+  
+  <div class="w3-panel w3-white">
+    <div class="text-center">
+      <h4 class="font-weight-bold h6" style="text-align:center"><b>{{mechanic}}</b></h4>
+      <h3 class="font-weight-bold h5" style="text-shadow:1px 1px 0 #444; text-align:center; "><b>{{mechanic.job_title}}</b></h3>
+    <h3 class="font-weight-bold h5" style="text-shadow:1px 1px 0 #444"><b>Mobile : </b>{{mechanic.mobile}}</h3>
+    <h3 class="font-weight-bold h5" style="text-shadow:1px 1px 0 #444"><b>Address : </b>{{mechanic.address}}</h3>
+    <h3 class="font-weight-bold h5" style="text-shadow:1px 1px 0 #444"><b>Skill :</b> {{mechanic.skill}}</h3>
+    <h3 class="font-weight-bold h5" style="text-shadow:1px 1px 0 #444"><b>Address : </b>{{mechanic.address}}</h3>
   </div>
 </div>
 
 <div style="text-align: center;">
   <a href="/edit-mechanic-profile"><button class="button" ><span>Edit Profile </span></button></a>
 </div>
-
+</div>
+</div>
+</div>
+</div>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 {% endblock content %}
