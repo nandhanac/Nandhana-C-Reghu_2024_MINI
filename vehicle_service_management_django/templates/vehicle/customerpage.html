@@ -90,7 +90,7 @@
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <a href="index.html" class="nav-item nav-link active">Home</a>
                 <a href= "{% url 'about' %}"class="nav-item nav-link">About</a>
-                <a href="/service" class="nav-item nav-link">Services</a>
+                <a href="#section1" class="nav-item nav-link">Services</a>
                 {% comment %} <div class="nav-item dropdown"> {% endcomment %}
                     <a href="#" class="nav-item nav-link" data-bs-toggle="dropdown">Assessment</a>
                     {% comment %} <div class="dropdown-menu fade-up m-0">
@@ -497,29 +497,32 @@
     </div> {% endcomment %}
     <!-- Booking End -->
 
-
+    <section id="section1">
     <!-- Team Start -->
     <div class="container-xxl py-5">
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="text-primary text-uppercase">// Our Technicians //</h6>
-                <h1 class="mb-5">Our Expert Technicians</h1>
+                {% comment %} <h6 class="text-primary text-uppercase">// Our Technicians //</h6> {% endcomment %}
+                <h1 class="mb-5">Our Service Avaliable</h1>
             </div>
             <div class="row g-4">
                 <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                   
                     <div class="team-item">
                         <div class="position-relative overflow-hidden">
                             <img class="img-fluid" src="img/team-1.jpg" alt="">
                             <div class="team-overlay position-absolute start-0 top-0 w-100 h-100">
-                                <a class="btn btn-square mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square mx-1" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square mx-1" href=""><i class="fab fa-instagram"></i></a>
+                                <a class="btn btn-square mx-1" href=""><i class="fa fa-plus-square"></i></a>
+                                <a class="btn btn-square mx-1" href=""><i class="fas fa-tools"></i></a>
+                                <a class="btn btn-square mx-1" href=""><i class="fa fa-plus-square"></i></a>
                             </div>
-                        </div>
+                        </div> <a href="{%url 'service_one'%}"> 
                         <div class="bg-light text-center p-4">
-                            <h5 class="fw-bold mb-0">Full Name</h5>
-                            <small>Designation</small>
+                            <h5 class="fw-bold mb-0">Diagnostic Test</h5><br>
+                            <img class="img-fluid" src="{% static 'images/ser1.png' %}" alt="" style="width:50px;height:60px;">
+                        
                         </div>
+                    </a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
@@ -527,30 +530,32 @@
                         <div class="position-relative overflow-hidden">
                             <img class="img-fluid" src="img/team-2.jpg" alt="">
                             <div class="team-overlay position-absolute start-0 top-0 w-100 h-100">
-                                <a class="btn btn-square mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square mx-1" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square mx-1" href=""><i class="fab fa-instagram"></i></a>
+                                <a class="btn btn-square mx-1" href=""><i class="fa fa-plus-square"></i></a>
+                                <a class="btn btn-square mx-1" href=""><i class="fas fa-tools"></i></a>
+                                <a class="btn btn-square mx-1" href=""><i class="fa fa-plus-square"></i></a>
                             </div>
-                        </div>
+                        </div><a href="{%url 'service_two'%}"> 
                         <div class="bg-light text-center p-4">
-                            <h5 class="fw-bold mb-0">Full Name</h5>
-                            <small>Designation</small>
+                            <h5 class="fw-bold mb-0">Denting & Painting</h5>
+                            <br>
+                            <img class="img-fluid" src="{% static 'images/ser2.png' %}" alt="" style="width:50px;height:60px;">
                         </div>
-                    </div>
+                    </div></a>
                 </div>
                 <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="team-item">
                         <div class="position-relative overflow-hidden">
                             <img class="img-fluid" src="img/team-3.jpg" alt="">
                             <div class="team-overlay position-absolute start-0 top-0 w-100 h-100">
-                                <a class="btn btn-square mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square mx-1" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square mx-1" href=""><i class="fab fa-instagram"></i></a>
+                                <a class="btn btn-square mx-1" href=""><i class="fa fa-plus-square"></i></a>
+                                <a class="btn btn-square mx-1" href=""><i class="fas fa-tools"></i></a>
+                                <a class="btn btn-square mx-1" href=""><i class="fa fa-plus-square"></i></a>
                             </div>
                         </div>
                         <div class="bg-light text-center p-4">
-                            <h5 class="fw-bold mb-0">Full Name</h5>
-                            <small>Designation</small>
+                            <h5 class="fw-bold mb-0">Car Spa & Cleaning</h5>
+                            <br>
+                            <img class="img-fluid" src="{% static 'images/ser3.png' %}" alt="" style="width:50px;height:60px;">
                         </div>
                     </div>
                 </div>
@@ -559,14 +564,15 @@
                         <div class="position-relative overflow-hidden">
                             <img class="img-fluid" src="img/team-4.jpg" alt="">
                             <div class="team-overlay position-absolute start-0 top-0 w-100 h-100">
-                                <a class="btn btn-square mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square mx-1" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square mx-1" href=""><i class="fab fa-instagram"></i></a>
+                                <a class="btn btn-square mx-1" href=""><i class="fa fa-plus-square"></i></a>
+                                <a class="btn btn-square mx-1" href=""><i class="fas fa-tools"></i></a>
+                                <a class="btn btn-square mx-1" href=""><i class="fa fa-plus-square"></i></a> 
                             </div>
                         </div>
                         <div class="bg-light text-center p-4">
-                            <h5 class="fw-bold mb-0">Full Name</h5>
-                            <small>Designation</small>
+                            <h5 class="fw-bold mb-0">Detailing Service</h5>
+                            <br>
+                            <img class="img-fluid" src="{% static 'images/ser4.png' %}" alt="" style="width:50px;height:60px;">
                         </div>
                     </div>
                 </div>
@@ -575,7 +581,7 @@
     </div>
     <!-- Team End -->
 
-
+</section>
     <!-- Testimonial Start -->
     <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
         <div class="container">
@@ -706,6 +712,25 @@
     <!-- Template Javascript -->  
 
     <script src="/static/js/main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Add smooth scrolling to all anchor links
+            $("a").on('click', function (event) {
+                if (this.hash !== "") {
+                    event.preventDefault();
+    
+                    var hash = this.hash;
+                    $('html, body').animate({
+                        scrollTop: $(hash).offset().top
+                    }, 800, function () {
+                        window.location.hash = hash;
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
