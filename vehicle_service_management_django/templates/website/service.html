@@ -1,10 +1,10 @@
 <!DOCTYPE html> 
 <html lang="en">
 	{% load static %}
-<!-- doccure/search.html  30 Nov 2019 04:12:16 GMT -->
+
 <head>
 		<meta charset="utf-8">
-		<title>Doccure</title>
+		<title>SPLASHPAINTZONE</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
 		
 		<!-- Favicons -->
@@ -125,21 +125,23 @@
 						</div> 
 						
 						<div class="col-md-12 col-lg-8 col-xl-9">
-
+							{% for subsubcategory in subsubcategories %}
 							<!-- Doctor Widget -->
+						
 							<div class="card">
 								<div class="card-body">
 									<div class="doctor-widget">
 										<div class="doc-info-left">
 											<div class="doctor-img">
 												<a href="doctor-profile.html">
-													<img src="assets/img/doctors/doctor-thumb-01.jpg" class="img-fluid" alt="User Image">
+													<h6 class="doc-name">{{ subsubcategory.subcategory.name }}</h4>
+													<img src="{{ subsubcategory.image.url }}" class="img-fluid" alt="User Image"height="100%" width="100%">
 												</a>
 											</div>
 											<div class="doc-info-cont">
-												<h4 class="doc-name"><a href="doctor-profile.html">Dr. Ruby Perrin</a></h4>
-												<p class="doc-speciality">MDS - Periodontology and Oral Implantology, BDS</p>
-												<h5 class="doc-department"><img src="assets/img/specialities/specialities-05.png" class="img-fluid" alt="Speciality">Dentist</h5>
+
+												<h4 class="doc-name"><a href="doctor-profile.html">{{ subsubcategory.name }}</a></h4>
+												<p class="doc-speciality">{{ subsubcategory.description }}</p>
 												<div class="rating">
 													<i class="fas fa-star filled"></i>
 													<i class="fas fa-star filled"></i>
@@ -149,8 +151,8 @@
 													<span class="d-inline-block average-rating">(17)</span>
 												</div>
 												<div class="clinic-details">
-													<p class="doc-location"><i class="fas fa-map-marker-alt"></i> Florida, USA</p>
-													<ul class="clinic-gallery">
+													<p class="doc-location"><i class="#"></i>100Km or 1 month Warranty</p>
+													{% comment %} <ul class="clinic-gallery">
 														<li>
 															<a href="assets/img/features/feature-01.jpg" data-fancybox="gallery">
 																<img src="assets/img/features/feature-01.jpg" alt="Feature">
@@ -171,34 +173,34 @@
 																<img src="assets/img/features/feature-04.jpg" alt="Feature">
 															</a>
 														</li>
-													</ul>
+													</ul> {% endcomment %}
 												</div>
 												<div class="clinic-services">
-													<span>Dental Fillings</span>
-													<span> Whitneing</span>
+													<span>Coolant - Top up</span>
+													<span> Multi-Layer Coating</span>
 												</div>
 											</div>
 										</div>
 										<div class="doc-info-right">
 											<div class="clini-infos">
 												<ul>
-													<li><i class="far fa-thumbs-up"></i> 98%</li>
-													<li><i class="far fa-comment"></i> 17 Feedback</li>
-													<li><i class="fas fa-map-marker-alt"></i> Florida, USA</li>
-													<li><i class="far fa-money-bill-alt"></i> $300 - $1000 <i class="fas fa-info-circle" data-toggle="tooltip" title="Lorem Ipsum"></i> </li>
+													{% comment %} <li><i class="far fa-thumbs-up"></i> 98%</li> {% endcomment %}
+													<li><i class="far fa-hourglass"></i>{{ subsubcategory.hours_taken}} Hours</li>
+													 <li> </li> 
+													<li><i class="far fa-money-bill-alt"></i> Rs- {{ subsubcategory.price}} </li>
 												</ul>
 											</div>
 											<div class="clinic-booking">
-												<a class="view-pro-btn" href="doctor-profile.html">View Profile</a>
+												{% comment %} <a class="view-pro-btn" href="doctor-profile.html">View Profile</a> {% endcomment %}
 												<a class="apt-btn" href="booking.html">Book Appointment</a>
 											</div>
 										</div>
 									</div>
 								</div>
-							</div>
+							</div>{% endfor %}
 							<!-- /Doctor Widget -->
 
-							<!-- Doctor Widget -->
+							{% comment %} <!-- Doctor Widget -->
 							<div class="card">
 								<div class="card-body">
 									<div class="doctor-widget">
@@ -483,7 +485,7 @@
 										</div>
 									</div>
 								</div>
-							</div>
+							</div> {% endcomment %}
 							<!-- /Doctor Widget -->
 
 							<div class="load-more text-center">
@@ -497,7 +499,7 @@
 			</div>		
 			<!-- /Page Content -->
    
-			<!-- Footer -->
+			{% comment %} <!-- Footer -->
 			<footer class="footer">
 				
 				<!-- Footer Top -->
@@ -634,7 +636,7 @@
 				<!-- /Footer Bottom -->
 				
 			</footer>
-			<!-- /Footer -->
+			<!-- /Footer --> {% endcomment %}
 
 		</div>
 		<!-- /Main Wrapper -->

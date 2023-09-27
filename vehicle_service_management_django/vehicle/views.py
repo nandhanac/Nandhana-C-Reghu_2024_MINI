@@ -23,7 +23,9 @@ def home(request):
 def about(request):
     return render(request, 'website/about.html')
 def service(request):
-    return render(request, 'website/service.html')
+    subsubcategories = SubSubcategory.objects.all()
+    return render(request, 'website/service.html', {'subsubcategories': subsubcategories})
+    # return render(request, 'website/service.html')
 #for showing signup/login button for customer
 def customerclick_view(request):
     if request.user.is_authenticated:
