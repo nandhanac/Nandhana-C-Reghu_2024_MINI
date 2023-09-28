@@ -6168,6 +6168,7 @@ html.menu-opened body {
 	}
 	.breadcrumb-bar {
 		height: auto;
+		
 	}
 	.login-right {
 		margin: 0 15px;
@@ -6432,6 +6433,7 @@ html.menu-opened body {
 	}
 	.breadcrumb-bar .breadcrumb-title {
 		font-size: 18px;
+		
 	}
 	.dash-widget h6 {
 		font-size: 15px;

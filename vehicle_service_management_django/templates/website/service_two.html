@@ -121,13 +121,13 @@
 								</div>
 							</div>{% endcomment %}
 							<!-- /Search Filter -->
-							<div class="breadcrumb-bar">
+							<div class="breadcrumb-bar" style="background-color:#D81324 ;">
 								<div class="container-fluid">
 									<div class="row align-items-center">
 										<div class="col-md-12 col-12">
 											<nav aria-label="breadcrumb" class="page-breadcrumb">
 												<ol class="breadcrumb">
-													<li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
+													<li class="breadcrumb-item"><a href="{%url 'users-home'%}">Home</a></li>
 													<li class="breadcrumb-item active" aria-current="page">Denting & Painting</li>
 												</ol>
 											</nav>
@@ -141,7 +141,7 @@
 							
 							<!-- Doctor Widget -->
 							{% for subsubcategory in subsubcategories %}
-                          {% if forloop.counter <= 2 and subsubcategory.front_side %}
+                          {% comment %} {% if forloop.counter <= 2 and subsubcategory.front_side %} {% endcomment %}
 							<div class="card">
 								<div class="card-body">
 									<div class="doctor-widget">
@@ -199,34 +199,35 @@
 											<div class="clini-infos">
 												<ul>
 													{% comment %} <li><i class="far fa-thumbs-up"></i> 98%</li> {% endcomment %}
-													<li><i class="far fa-hourglass"></i>{{ subsubcategory.hours_taken}} Hours</li>
+													<li><i class="far fa-hourglass"></i>{{ subsubcategory.hours_taken}} Hours/Days</li>
 													 <li> </li> 
 													<li><i class="far fa-money-bill-alt"></i> Rs- {{ subsubcategory.price}} </li>
 												</ul>
 											</div>
 											<div class="clinic-booking">
 												{% comment %} <a class="view-pro-btn" href="doctor-profile.html">View Profile</a> {% endcomment %}
-												<a class="apt-btn" href="booking.html">Book Appointment</a>
+												<a class="apt-btn" style="background-color:#D81324; border: 2px solid #D81324;" href="booking.html">Book Appointment</a>
 											</div>
 										</div>
 									</div>
 								</div>
-							</div> {% endif %}
+							</div>
+							 {% comment %} {% endif %} {% endcomment %}
 							{% endfor %}
 							<!-- /Doctor Widget -->
-
-							{% comment %} <!-- Doctor Widget -->
+							{% comment %}{% for subsubcategory in subsubcategories %}
+							 <!-- Doctor Widget -->
 							<div class="card">
 								<div class="card-body">
 									<div class="doctor-widget">
 										<div class="doc-info-left">
 											<div class="doctor-img">
 												<a href="doctor-profile.html">
-													<img src="assets/img/doctors/doctor-thumb-02.jpg" class="img-fluid" alt="User Image">
+													<img src="{{ subsubcategory.image.url }}" class="img-fluid" alt="User Image"height="100%" width="100%">
 												</a>
 											</div>
 											<div class="doc-info-cont">
-												<h4 class="doc-name"><a href="doctor-profile.html">Dr. Darren Elder</a></h4>
+												<h4 class="doc-name"><a href="doctor-profile.html">{{ subsubcategory.name }}</a></h4>
 												<p class="doc-speciality">BDS, MDS - Oral & Maxillofacial Surgery</p>
 												<h5 class="doc-department"><img src="assets/img/specialities/specialities-05.png" class="img-fluid" alt="Speciality">Dentist</h5>
 												<div class="rating">
@@ -284,7 +285,7 @@
 										</div>
 									</div>
 								</div>
-							</div>
+							</div>{% endfor %}
 							<!-- /Doctor Widget -->
 
 							<!-- Doctor Widget -->
@@ -503,9 +504,9 @@
 							</div> {% endcomment %}
 							<!-- /Doctor Widget -->
 
-							{% comment %} <div class="load-more text-center">
-								<a class="btn btn-primary btn-sm" href="javascript:void(0);">Load More</a>	
-							</div>	 {% endcomment %}
+						 <div class="load-more text-center" >
+								<a class="btn btn-primary btn-sm" style="background-color:#D81324; border: 2px solid #D81324;" href="javascript:void(0);">Load More</a>	
+							</div>	
 						</div>
 					</div>
 

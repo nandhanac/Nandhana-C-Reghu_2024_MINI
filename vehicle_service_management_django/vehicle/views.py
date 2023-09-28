@@ -19,19 +19,44 @@ def home_view(request):
         return HttpResponseRedirect('afterlogin')
     return render(request,'vehicle/index.html')
 def home(request):
-    return render(request, 'vehicle/customerpage.html')
+
+    denting_painting_category = Category.objects.get(name="Denting & Painting")
+
+    # Include the category ID in the context
+    context = {
+        'category_id': denting_painting_category.id,
+    }
+
+    return render(request, 'vehicle/customerpage.html', context)
 def about(request):
     return render(request, 'website/about.html')
 def service_one(request):
     subsubcategories = SubSubcategory.objects.all()
     return render(request, 'website/service_one.html', {'subsubcategories': subsubcategories})
     # return render(request, 'website/service.html')
-def service_two(request):
-    # Filter subsubcategories with front_side=True
-    front_subsubcategories = SubSubcategory.objects.filter(front_side=True)[:2]  # Limit to 2 items
+# def service_two(request):
+#     # Filter subsubcategories with front_side=True
+#     front_subsubcategories = SubSubcategory.objects.filter(front_side=True)[:2]  # Limit to 2 items
 
-    return render(request, 'website/service_two.html', {'subsubcategories': front_subsubcategories})
+#     return render(request, 'website/service_two.html', {'subsubcategories': front_subsubcategories})
 
+def service_two(request, category_id):
+    # Retrieve the category based on the category_id
+    category = get_object_or_404(Category, id=category_id)
+    print(category)
+    # Retrieve the subcategories and subsubcategories associated with the category
+    subcategories = Subcategory.objects.filter(category=category)
+    print(subcategories)
+    subsubcategories = SubSubcategory.objects.filter(subcategory__category=category)
+    print(subsubcategories)
+    # Pass the category, subcategories, and subsubcategories to the template
+    context = {
+        'category': category,
+        'subcategories': subcategories,
+        'subsubcategories': subsubcategories,
+    }
+
+    return render(request, 'website/service_two.html', context)
 #for showing signup/login button for customer
 def customerclick_view(request):
     if request.user.is_authenticated:

@@ -15,7 +15,7 @@ urlpatterns = [
 path('', include('vehicle.urls')),
     path('',views.home_view,name='home'),
 path('service_one',views.service_one,name='service_one'),
-path('service_two',views.service_two,name='service_two'),
+path('service_two/<int:category_id>/', views.service_two, name='service_two'),
     path('adminclick', views.adminclick_view),
     path('customerclick', views.customerclick_view),
     path('mechanicsclick', views.mechanicsclick_view),
