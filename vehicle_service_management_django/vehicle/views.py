@@ -11,8 +11,9 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.contrib.auth.views import  PasswordResetView, PasswordChangeView
 
-from .models import Category,Subcategory,SubSubcategory
-from .forms import CategoryForm,SubcategoryForm,SubSubcategoryForm
+
+from .models import Category,Subcategory,SubSubcategory,CarModel
+from .forms import CategoryForm,SubcategoryForm,SubSubcategoryForm,CarModelForm
 
 def home_view(request):
     if request.user.is_authenticated:
@@ -57,6 +58,14 @@ def service_two(request, category_id):
     }
 
     return render(request, 'website/service_two.html', context)
+
+def selectcar(request):
+    car_models = CarModel.objects.all()
+    return render(request,'website/select_car.html',{'car_models': car_models,})
+
+
+
+
 #for showing signup/login button for customer
 def customerclick_view(request):
     if request.user.is_authenticated:
@@ -299,6 +308,30 @@ def delete_subsubcategory_view(request, subsubcategory_id):
         return redirect('admin_subsubcategory_view')
     
     return render(request, 'vehicle/delete_subsubcategory.html', {'subsubcategory': subsubcategory})
+
+
+
+def car_models(request):
+    car_models = CarModel.objects.all()
+    
+    if request.method == 'POST':
+        form = CarModelForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('car-models')  # Redirect to the same page after form submission
+
+    else:
+        form = CarModelForm()
+
+    return render(request, 'vehicle/admin_selectcar.html', {'car_models': car_models, 'form': form})
+
+
+
+
+
+
+
+
 
 
 

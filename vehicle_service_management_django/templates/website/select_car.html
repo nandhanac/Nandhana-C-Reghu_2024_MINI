@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+	{% load static %}   
+<!-- Mirrored from dreamguys.co.in/demo/doccure/admin/patient-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 30 Nov 2019 04:12:51 GMT -->
+<head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <title>SPLASHPAINTZONE</title>
+		
+		<!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="{%static 'assets/img/favicon.png'%}">
+		
+		<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="{%static 'assets/css/bootstrap.min.css'%}">
+		
+		<!-- Fontawesome CSS -->
+        <link rel="stylesheet" href="{%static 'assets/css/font-awesome.min.css'%}">
+		
+		<!-- Feathericon CSS -->
+        <link rel="stylesheet" href="{%static 'assets/css/feathericon.min.css'%}">
+		
+		<!-- Datatables CSS -->
+		<link rel="stylesheet" href="{%static 'assets/plugins/datatables/datatables.min.css'%}">
+		
+		<!-- Main CSS -->
+        <link rel="stylesheet" href="{%static 'assets/css/style.css'%}">
+		
+		<!--[if lt IE 9]>
+			<script src="{%static 'assets/js/html5shiv.min.js'%}"></script>
+			<script src="{%static 'assets/js/respond.min.js'%}"></script>
+		<![endif]-->
+    </head>
+    <body>
+	
+		<!-- Main Wrapper -->
+        <div class="main-wrapper">
+		
+			<!-- Header -->
+            <div class="header">
+			<div class="main" style="margin-left: 100px;">
+				
+				<section class="comp-section comp-cards">
+					<div class="comp-header">
+						<h3 class="comp-title">Select Your Car</h3>
+						<div class="line"></div>
+					</div>
+					
+					<div class="row">
+						{% for car_model in car_models %}
+						<div class="col-12 col-md-6 col-lg-4 d-flex">
+							<div class="card flex-fill">
+								<img alt="Card Image" src="{{ car_model.image.url }}" class="card-img-top" style="width: 400px; height: 250px;">
+								<div class="card-header">
+									<h5 class="card-title mb-0">{{ car_model.name }}</h5>
+								</div>
+								{% comment %}
+								<div class="card-body">
+									<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+									<a class="card-link" href="#">Card link</a>
+									<a class="card-link" href="#">Another link</a>
+								</div>
+								{% endcomment %}
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+				</section>
+				
+					
+			</div>
+			<!-- /Page Wrapper -->
+		
+        </div>
+		<!-- /Main Wrapper -->
+		
+		<!-- jQuery -->
+        <script src="{%static 'assets/js/jquery-3.2.1.min.js'%}"></script>
+		
+		<!-- Bootstrap Core JS -->
+        <script src="{%static 'assets/js/popper.min.js'%}"></script>
+        <script src="{%static 'assets/js/bootstrap.min.js'%}"></script>
+		
+		<!-- Slimscroll JS -->
+        <script src="{%static 'assets/plugins/slimscroll/jquery.slimscroll.min.js'%}"></script>
+		
+		<!-- Datatables JS -->
+		<script src="{%static 'assets/plugins/datatables/jquery.dataTables.min.js'%}"></script>
+		<script src="{%static 'assets/plugins/datatables/datatables.min.js'%}"></script>
+		
+		<!-- Custom JS -->
+		<script  src="{%static 'assets/js/script.js'%}"></script>
+		
+    </body>
+
+<!-- Mirrored from dreamguys.co.in/demo/doccure/admin/patient-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 30 Nov 2019 04:12:52 GMT -->
+</html>

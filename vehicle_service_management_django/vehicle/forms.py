@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from . import models
 from .models import Category,Subcategory,SubSubcategory
+from .models import CarModel
 class CustomerUserForm(forms.ModelForm):
     class Meta:
         model=User
@@ -133,3 +134,16 @@ class SubSubcategoryForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'SubSubcategory Name'}),
             'subcategory': forms.Select(attrs={'class': 'form-control'}),
         }
+
+
+class CarModelForm(forms.ModelForm):
+    class Meta:
+        model = CarModel
+        fields = ['name', 'image']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Car Model Name'}),
+            'image': forms.FileInput(attrs={'class': 'form-control-file'})
+        }
+
+class CarSelectionForm(forms.Form):
+    car_model = forms.ModelChoiceField(queryset=CarModel.objects.all(), empty_label=None)

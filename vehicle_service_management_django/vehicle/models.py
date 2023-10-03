@@ -96,3 +96,10 @@ class SubSubcategory(models.Model):
     
     def __str__(self):
         return self.name
+    
+class CarModel(models.Model):
+    name = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='car_images/')
+
+    def __str__(self):
+        return self.name
