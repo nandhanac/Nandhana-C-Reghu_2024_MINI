@@ -145,5 +145,3 @@ class CarModelForm(forms.ModelForm):
             'image': forms.FileInput(attrs={'class': 'form-control-file'})
         }
 
-class CarSelectionForm(forms.Form):
-    car_model = forms.ModelChoiceField(queryset=CarModel.objects.all(), empty_label=None)
