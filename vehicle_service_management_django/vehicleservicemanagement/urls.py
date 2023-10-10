@@ -17,9 +17,18 @@ path('', include('vehicle.urls')),
 path('service_one',views.service_one,name='service_one'),
 path('service_two/<int:category_id>/', views.service_two, name='service_two'),
 path('car-models/', views.car_models, name='car-models'),
- path('selectcar/', views.selectcar, name='selectcar'),
+path('selectcar/<int:subsubcategory_id>/', views.selectcar, name='selectcar'),
+path('create_car_name/', views.create_car_name, name='create_car_name'),
+path('delete-car-name/<int:car_name_id>/', views.delete_car_name, name='delete_car_name'),
+path('types/', views.types, name='types'),
 
+ path('book/<int:subsubcategory_id>/', views.book_service, name='book_service'),
+path('confirmation/', views.booking_confirmation, name='booking_confirmation'),
 
+   
+   
+   
+   
     path('adminclick', views.adminclick_view),
     path('customerclick', views.customerclick_view),
     path('mechanicsclick', views.mechanicsclick_view),

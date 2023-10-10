@@ -12,8 +12,9 @@ from django.urls import reverse_lazy
 from django.contrib.auth.views import  PasswordResetView, PasswordChangeView
 
 
-from .models import Category,Subcategory,SubSubcategory,CarModel
-from .forms import CategoryForm,SubcategoryForm,SubSubcategoryForm,CarModelForm
+
+from .models import Category,Subcategory,SubSubcategory,CarModel,CarName, Type
+from .forms import CategoryForm,SubcategoryForm,SubSubcategoryForm,CarModelForm, CarNameForm,TypeForm,BookingForm
 
 def home_view(request):
     if request.user.is_authenticated:
@@ -33,7 +34,8 @@ def about(request):
     return render(request, 'website/about.html')
 def service_one(request):
     subsubcategories = SubSubcategory.objects.all()
-    return render(request, 'website/service_one.html', {'subsubcategories': subsubcategories})
+    car_models = CarModel.objects.all()
+    return render(request, 'website/service_one.html', {'subsubcategories': subsubcategories,'car_models': car_models})
     # return render(request, 'website/service.html')
 # def service_two(request):
 #     # Filter subsubcategories with front_side=True
@@ -59,10 +61,95 @@ def service_two(request, category_id):
 
     return render(request, 'website/service_two.html', context)
 
-def selectcar(request):
-    car_models = CarModel.objects.all()
-    return render(request,'website/select_car.html',{'car_models': car_models,})
+# def selectcar(request):
+#     car_models = CarModel.objects.all()
+#     return render(request,'website/select_car.html',{'car_models': car_models,})
 
+def selectcar(request,subsubcategory_id):
+    subsubcategory = get_object_or_404(SubSubcategory, pk=subsubcategory_id)
+    car_models = CarModel.objects.all()
+    create_car_name = CarName.objects.all()
+    types = Type.objects.all()
+    return render(request, 'website/select_car.html', {'car_models': car_models, 'create_car_name': create_car_name, 'types': types, 'subsubcategory': subsubcategory})
+
+def create_car_name(request):
+    if request.method == 'POST':
+        form = CarNameForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('create_car_name')
+    else:
+        form = CarNameForm()
+    
+    create_car_name = CarName.objects.all()
+    return render(request, 'vehicle/admin_car.html', {'form': form, 'create_car_name': create_car_name})
+
+def delete_car_name(request, car_name_id):
+    car_name = get_object_or_404(CarName, pk=car_name_id)
+    # if request.method == 'POST':
+    car_name.delete()
+    return redirect('create_car_name')
+    # return render(request, 'vehicle/admin_car.html', {'car_name': car_name})
+
+
+def types(request):
+    if request.method == 'POST':
+        form = TypeForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+    else:
+        form = TypeForm()
+
+    types = Type.objects.all()
+    return render(request, 'vehicle/admin_type.html', {'form': form, 'types': types})
+
+
+# def service_booking(request, subsubcategory_id):
+#     subsubcategory = SubSubcategory.objects.get(id=subsubcategory_id)
+#     categories = Category.objects.all()
+#     subcategories = Subcategory.objects.all()
+
+#     if request.method == 'POST':
+#         form = BookingForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             # Redirect to a success page or do something else
+#     else:
+#         form = BookingForm()
+
+#     context = {
+#         'subsubcategory': subsubcategory,
+#         'categories': categories,
+#         'subcategories': subcategories,
+#         'form': form,
+#     }
+
+#     return render(request, 'website/booking.html', context)
+
+
+def book_service(request, subsubcategory_id):
+    subsubcategory = get_object_or_404(SubSubcategory, pk=subsubcategory_id)
+
+    if request.method == 'POST':
+        form = BookingForm(request.POST,request.FILES)
+        if form.is_valid():
+            booking = form.save(commit=False)
+            booking.selected_subsubcategory = subsubcategory
+            booking.name = request.user.first_name
+            booking.save()
+            return redirect('booking_confirmation',)
+
+    else:
+        # form = BookingForm()
+        form = BookingForm(initial={'name': request.user.first_name})
+    return render(request, 'website/booking.html', {'form': form, 'subsubcategory': subsubcategory})
+
+
+
+
+def booking_confirmation(request):
+    # You can display a confirmation message here
+    return render(request, 'website/booking_confirmation.html')
 
 
 

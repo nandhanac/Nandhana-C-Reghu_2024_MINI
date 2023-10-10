@@ -120,7 +120,8 @@
 									</div>	
 								</div>
 							</div>{% endcomment %}
-							<!-- /Search Filter -->
+							<!-- /Search Filter --> 
+							{% for subcategories in subcategories %}
 							<div class="breadcrumb-bar" style="background-color:#D81324 ;">
 								<div class="container-fluid">
 									<div class="row align-items-center">
@@ -128,14 +129,15 @@
 											<nav aria-label="breadcrumb" class="page-breadcrumb">
 												<ol class="breadcrumb">
 													<li class="breadcrumb-item"><a href="{%url 'users-home'%}">Home</a></li>
-													<li class="breadcrumb-item active" aria-current="page">Denting & Painting</li>
+													<li class="breadcrumb-item active" aria-current="page">{{subcategories.category}}</li>
 												</ol>
 											</nav>
-											<h2 class="breadcrumb-title">Front side</h2>
+											<h2 class="breadcrumb-title">{{subcategories}}</h2>
 										</div>
 									</div>
 								</div>
 							</div>	
+							{% endfor %}
 					</div> 
 						<div class="col-md-12 col-lg-8 col-xl-9">
 							
@@ -145,6 +147,7 @@
 							<div class="card">
 								<div class="card-body">
 									<div class="doctor-widget">
+										<li><i class="far fa-money-bill-alt"></i> {{ subsubcategory.subcategory}} </li>
 										<div class="doc-info-left">
 											<div class="doctor-img">
 												<a href="doctor-profile.html">

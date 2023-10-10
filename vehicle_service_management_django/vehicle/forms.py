@@ -2,7 +2,12 @@ from django import forms
 from django.contrib.auth.models import User
 from . import models
 from .models import Category,Subcategory,SubSubcategory
-from .models import CarModel
+from .models import CarModel,CarName,Type,Booking
+
+
+from django.core.exceptions import ValidationError
+from django.utils import timezone
+
 class CustomerUserForm(forms.ModelForm):
     class Meta:
         model=User
@@ -93,9 +98,6 @@ class ContactusForm(forms.Form):
     Message = forms.CharField(max_length=500,widget=forms.Textarea(attrs={'rows': 3, 'cols': 30}))
 
 # category
-
-
-
 class CategoryForm(forms.ModelForm):
     
     class Meta:
@@ -105,6 +107,7 @@ class CategoryForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Category Name'}),
             # 'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Category Description'}),
         }
+#subcategory
 class SubcategoryForm(forms.ModelForm):
     # Add a category field to select the associated category
     category = forms.ModelChoiceField(queryset=None, empty_label="Select a Category", widget=forms.Select(attrs={'class': 'form-control'}))
@@ -120,6 +123,8 @@ class SubcategoryForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         # Set the queryset for the category field to display existing categories
         self.fields['category'].queryset = Category.objects.all()
+
+#subsubcategory
 class SubSubcategoryForm(forms.ModelForm):
     # Add fields for image, description, price, and hours taken
     image = forms.ImageField(required=False, widget=forms.ClearableFileInput(attrs={'class': 'form-control'}))
@@ -144,4 +149,44 @@ class CarModelForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Car Model Name'}),
             'image': forms.FileInput(attrs={'class': 'form-control-file'})
         }
+class CarNameForm(forms.ModelForm):
+    class Meta:
+        model = CarName
+        fields = ['name', 'car_model']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Customize the car_model field queryset to show only car models.
+        self.fields['car_model'].queryset = CarModel.objects.all()
+
+    name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+
+class TypeForm(forms.ModelForm):
+    class Meta:
+        model = Type
+        fields = ['name', 'image']
+    
+
+class BookingForm(forms.ModelForm):
+    class Meta:
+        model = Booking
+        fields = ['appointment_date', 'name', 'address', 'Alternative_mobile']
+        widgets = {
+        'appointment_date': forms.DateInput(attrs={'type': 'date'}),'address': forms.Textarea(attrs={'rows': 3, 'cols': 30}),}
+
+    def clean_appointment_date(self):
+        appointment_date = self.cleaned_data.get('appointment_date')
+
+        if appointment_date:
+            # Get the current date
+            current_date = timezone.now().date()
+
+            # Calculate tomorrow's date
+            tomorrow = current_date + timezone.timedelta(days=1)
+
+            # Check if the appointment date is in the future and within the current year
+            if appointment_date <= current_date or appointment_date.year != current_date.year:
+                raise ValidationError('Appointment date must be tomorrow or later and within the current year.')
+
+        return appointment_date

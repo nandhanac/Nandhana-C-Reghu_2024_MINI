@@ -155,7 +155,7 @@
 											</div>
 											<div class="doc-info-cont">
 
-												<h4 class="doc-name"><a href="doctor-profile.html">{{ subsubcategory.name }}</a></h4>
+												<option value="{{ subsubcategory.id }}"><h4 class="doc-name">{{ subsubcategory.name }}</h4></option>
 												<p class="doc-speciality">{{ subsubcategory.description }}</p>
 												<div class="rating">
 													<i class="fas fa-star filled"></i>
@@ -209,8 +209,8 @@
 												{% comment %} <a class="view-pro-btn" href="doctor-profile.html">View Profile</a> {% endcomment %}
 												{% comment %} <a class="apt-btn"style="background-color:#D81324; border: 2px solid #D81324;" href="booking.html">select car</a> {% endcomment %}
 											<!-- Button to trigger the modal -->
-											<a class="apt-btn" style="background-color:#D81324; border: 2px solid #D81324;" href="/selectcar">Select Car</a>
-
+											 <a class="btn btn-block btn-outline-primary select-button" style="background-color:#D81324; border: 2px solid #D81324;" href="{% url 'selectcar' subsubcategory_id=subsubcategory.id %}">Select Car</a> 
+											{% comment %} <a href="{% url 'book_service' subsubcategory.id %}" class="btn btn-primary">Book Now</a> {% endcomment %}
 											<!-- Modal -->
 											
 											</div>
@@ -218,7 +218,7 @@
 									</div>
 								</div>
 							</div> {% endif %}
-							{% endfor %}
+							{% endfor %}</select>
 							
 
 		</div>

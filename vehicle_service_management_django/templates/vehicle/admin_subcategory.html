@@ -130,7 +130,7 @@
                 </button>
               </a>
               <a href="{% url 'delete-subcategory' subcategory.id %}"> 
-                <button class="btn btn-danger btn-xs">
+                <button class="btn btn-danger btn-xs" onclick="return confirm('Are you sure you want to delete this category?')">
                   <i class="fa fa-trash"></i>
                 </button>
               </a>

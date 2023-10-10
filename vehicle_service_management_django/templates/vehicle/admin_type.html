@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+    {% extends 'vehicle/adminbase.html' %}
+    {% load widget_tweaks %}
+    {% block content %}
+    <head>
+      <style media="screen">
+        /* Your existing CSS styles */
+        input[type=text], select, input[type=number], input[type=password], textarea {
+            width: 400px;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+          }
+      
+          input[type=submit] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+          }
+      
+          input[type=submit]:hover {
+            background-color: #45a049;
+          }
+      
+          table {
+            width: 100%;
+            border-collapse: collapse;
+          }
+      
+          table, th, td {
+            border: 1px solid #ddd;
+          }
+      
+          th, td {
+            padding: 8px;
+            text-align: left;
+          }
+      
+          th {
+            background-color: #f2f2f2;
+          }
+        .container {
+          display: flex;
+          justify-content: space-between;
+          margin-left:350px;
+          
+        }
+        .form-container {
+          width: 30%;
+          
+           /* Adjust the width as needed */
+        }
+        .table-container {
+          width: 45%;
+          margin-left:300px;margin-right:50px; /* Adjust the width as needed */
+        }
+        /* Style for Edit and Delete buttons */
+        .btn-edit {
+            background-color: #007BFF;
+            color: white;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+    
+        .btn-edit:hover {
+            background-color: #0056b3;
+        }
+    
+        .btn-delete {
+            background-color: #DC3545;
+            color: white;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: pointer;
+        }
+    
+        .btn-delete:hover {
+            background-color: #ba303c;
+        }
+      </style>
+    
+  
+     
+<head>
+    <title>Create Types</title>
+    <!-- Add DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+</head>
+<body>
+    <br><br><br><br><br>
+<h3 style="text-align:center;">Create Types</h3>
+<div class="container">
+<!-- Form for creating a new Type -->
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Create Type</button>
+</form>
+
+<div class="table-container">
+<!-- DataTable to display existing Types -->
+<table id="typesTable" class="display">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Image</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for type in types %}
+        <tr>
+            <td>{{ type.name }}</td>
+            <td><img src="{{ type.image.url }}" width="100" height="100"></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+</div>
+<!-- Add DataTables JavaScript -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#typesTable').DataTable();
+    });
+</script>
+
+</body>
+</html>
+{% endblock content %}
