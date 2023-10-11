@@ -168,25 +168,72 @@ class TypeForm(forms.ModelForm):
         fields = ['name', 'image']
     
 
+# class BookingForm(forms.ModelForm):
+#     class Meta:
+#         model = Booking
+#         fields = ['appointment_date', 'name', 'address', 'Alternative_mobile']
+#         widgets = {
+#         'appointment_date': forms.DateInput(attrs={'type': 'date'}),'address': forms.Textarea(attrs={'rows': 3, 'cols': 30}),}
+#     def clean_appointment_date(self):
+#         appointment_date = self.cleaned_data.get('appointment_date')
+#         if appointment_date:
+#             # Get the current date
+#             current_date = timezone.now().date()
+
+#             # Check if the appointment date is in the future and within the current year
+#             if appointment_date < current_date:
+#                 raise ValidationError('Appointment date must be the current year and tomorrow or later.')
+
+#         return appointment_date
+
+
+
+# class BookingForm(forms.ModelForm):
+#     class Meta:
+#         model = Booking
+#         fields = ['appointment_date', 'name', 'address', 'Alternative_mobile']
+#         widgets = {
+#             'appointment_date': forms.DateInput(attrs={
+#                 'type': 'date',
+#                 'min': (timezone.now() + timezone.timedelta(days=1)).strftime('%Y-%m-%d'),  # Set min date to next day
+#                 'max': (timezone.now().replace(month=12, day=31)).strftime('%Y-%m-%d'),  # Set max date to the end of the current year
+#             }),
+            
+#         }
 class BookingForm(forms.ModelForm):
     class Meta:
         model = Booking
         fields = ['appointment_date', 'name', 'address', 'Alternative_mobile']
         widgets = {
-        'appointment_date': forms.DateInput(attrs={'type': 'date'}),'address': forms.Textarea(attrs={'rows': 3, 'cols': 30}),}
-
+            'appointment_date': forms.DateInput(attrs={
+                'type': 'date',
+                'min': (timezone.now() + timezone.timedelta(days=1)).strftime('%Y-%m-%d'),  # Set min date to next day
+                'max': (timezone.now().replace(month=12, day=31)).strftime('%Y-%m-%d'),  # Set max date to the end of the current year
+                'class': 'form-control',  # Add Bootstrap class for styling
+            }),
+            'name': forms.TextInput(attrs={
+                'class': 'form-control',  # Add Bootstrap class for styling
+            }),
+            'address': forms.Textarea(attrs={
+                'class': 'form-control',  # Add Bootstrap class for styling
+                'rows': 3,
+                'cols': 30,
+            }),
+            'Alternative_mobile': forms.TextInput(attrs={
+                'class': 'form-control',  # Add Bootstrap class for styling
+                'placeholder': 'Enter 10-digit phone number',  # Placeholder text
+                'pattern': '[0-9]{10}',  # Pattern for 10-digit phone number
+            }),
+        }
     def clean_appointment_date(self):
         appointment_date = self.cleaned_data.get('appointment_date')
 
-        if appointment_date:
-            # Get the current date
-            current_date = timezone.now().date()
+        # Check if there are already three appointments for the selected date
+        existing_appointments_count = Booking.objects.filter(appointment_date=appointment_date).count()
 
-            # Calculate tomorrow's date
-            tomorrow = current_date + timezone.timedelta(days=1)
-
-            # Check if the appointment date is in the future and within the current year
-            if appointment_date <= current_date or appointment_date.year != current_date.year:
-                raise ValidationError('Appointment date must be tomorrow or later and within the current year.')
+        if existing_appointments_count >= 3:
+            raise ValidationError('....>>>>......Maximum appointments reached for this date.......>>>.....')
 
         return appointment_date
+
+    

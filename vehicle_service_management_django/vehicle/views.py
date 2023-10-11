@@ -13,7 +13,7 @@ from django.contrib.auth.views import  PasswordResetView, PasswordChangeView
 
 
 
-from .models import Category,Subcategory,SubSubcategory,CarModel,CarName, Type
+from .models import Category,Subcategory,SubSubcategory,CarModel,CarName, Type,Booking
 from .forms import CategoryForm,SubcategoryForm,SubSubcategoryForm,CarModelForm, CarNameForm,TypeForm,BookingForm
 
 def home_view(request):
@@ -137,7 +137,7 @@ def book_service(request, subsubcategory_id):
             booking.selected_subsubcategory = subsubcategory
             booking.name = request.user.first_name
             booking.save()
-            return redirect('booking_confirmation',)
+            return redirect('booking_confirmation',booking.id)
 
     else:
         # form = BookingForm()
@@ -147,9 +147,10 @@ def book_service(request, subsubcategory_id):
 
 
 
-def booking_confirmation(request):
-    # You can display a confirmation message here
-    return render(request, 'website/booking_confirmation.html')
+def booking_confirmation(request,booking_id):
+    booking = get_object_or_404(Booking, pk=booking_id)
+    
+    return render(request, 'website/booking_confirmation.html', {'booking': booking})
 
 
 
@@ -622,13 +623,18 @@ def admin_request_view(request):
     return render(request,'vehicle/admin_request.html')
 
 @login_required(login_url='adminlogin')
+# def admin_view_request_view(request):
+#     enquiry=models.Request.objects.all().order_by('-id')
+#     customers=[]
+#     for enq in enquiry:
+#         customer=models.Customer.objects.get(id=enq.customer_id)
+#         customers.append(customer)
+#     return render(request,'vehicle/admin_view_request.html',{'data':zip(customers,enquiry)})
+
+@login_required(login_url='adminlogin')
 def admin_view_request_view(request):
-    enquiry=models.Request.objects.all().order_by('-id')
-    customers=[]
-    for enq in enquiry:
-        customer=models.Customer.objects.get(id=enq.customer_id)
-        customers.append(customer)
-    return render(request,'vehicle/admin_view_request.html',{'data':zip(customers,enquiry)})
+    booking = Booking.objects.all()
+    return render(request, 'vehicle/admin_view_request.html', {'booking': booking})
 
 
 @login_required(login_url='adminlogin')

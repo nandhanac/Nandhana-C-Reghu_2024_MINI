@@ -1,4 +1,215 @@
-{% extends 'vehicle/customerbase.html' %}
+<!DOCTYPE html> 
+<html lang="en">
+	{% load static %}
+<!-- doccure/checkout.html  30 Nov 2019 04:12:16 GMT -->
+<head>
+		<meta charset="utf-8">
+		<title>SplashPaintZone</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+		
+		<!-- Favicons -->
+		<link href="{%static "assets/img/favicon.png"%}" rel="icon">
+		
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="{%static "assets/css/bootstrap.min.css"%}">
+		
+		<!-- Fontawesome CSS -->
+		<link rel="stylesheet" href="{%static "assets/plugins/fontawesome/css/fontawesome.min.css"%}">
+		<link rel="stylesheet" href="{%static "assets/plugins/fontawesome/css/all.min.css"%}">
+		
+		<!-- Main CSS -->
+		<link rel="stylesheet" href="{%static "assets/css/style.css"%}">
+		
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+			<script src="assets/js/html5shiv.min.js"></script>
+			<script src="assets/js/respond.min.js"></script>
+		<![endif]-->
+	
+	</head>
+	<body>
+
+		<!-- Main Wrapper -->
+		<div class="main-wrapper">
+		
+			<!-- Header -->
+			
+			<!-- Breadcrumb -->
+			<div class="breadcrumb-bar"style="background-color:#D81324;">
+				<div class="container-fluid">
+					<div class="row align-items-center">
+						<div class="col-md-12 col-12">
+							<nav aria-label="breadcrumb" class="page-breadcrumb">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="{%url 'users-home'%}">Home</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Booking</li>
+								</ol>
+							</nav>
+							<h2 class="breadcrumb-title">Booking</h2>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /Breadcrumb -->
+			
+			<!-- Page Content -->
+			<div class="content">
+				<div class="container">
+
+					<div class="row">
+						<div class="col-md-7 col-lg-8">
+							<div class="card">
+								<div class="card-body">
+								
+									<form method="post"enctype="multipart/form-data">
+										{% csrf_token %}
+										<div class="info-widget">
+
+											<div id="error-message">
+												{% if form.errors %}
+												<ul class="errorlist">
+													{% for field, errors in form.errors.items %}
+													<b>{{ errors.0 }}</b>
+													{% endfor %}
+												</ul>
+												{% endif %}
+											</div>
+											<h4 class="card-title">Please fill Information</h4>
+											
+										<div class="col-md-6 col-sm-12">
+											<div class="form-group card-label">
+												<label for="{{ form.name.id_for_label }}">Name</label>
+												{{ form.name }}
+											</div>
+										</div>
+										<div class="col-md-6 col-sm-12">
+											<div class="form-group card-label">
+												<label for="{{ form.address.id_for_label }}">Address</label>
+												{{ form.address }}
+											</div>
+										</div>
+										<div class="col-md-6 col-sm-12">
+											<div class="form-group card-label">
+												<label for="{{ form.Alternative_mobile.id_for_label }}">Alternative Mobile</label>
+												{{ form.Alternative_mobile }}
+											</div>
+										</div>
+										<div class="col-md-6 col-sm-12">
+											<div class="form-group card-label">
+												<label for="{{ form.appointment_date.id_for_label }}">Appointment Date</label>
+												{{ form.appointment_date }}
+											</div>
+										</div></div>
+										<!-- Add other form fields here -->
+									
+									
+										<div class="payment-widget">
+											
+											
+											<!-- Submit Section -->
+											<div class="submit-section mt-4">
+												<button type="submit"style="background-color:#D81324;color: white; padding: 14px 20px; margin: 8px 0; border: none; border-radius: 4px; cursor: pointer;">Book Now</button>
+											</form> 
+											</div>
+											<!-- /Submit Section -->
+											
+										</div>
+									</form>
+									<!-- /Checkout Form -->
+									
+									
+								</div>
+							</div>
+							
+						</div>
+						
+						<div class="col-md-5 col-lg-4 theiaStickySidebar">
+						
+							<!-- Booking Summary -->
+							<div class="card booking-card">
+								<div class="card-header">
+									<h4 class="card-title">Booking Summary</h4>
+								</div>
+								<div class="card-body">
+								
+									<!-- Booking Doctor Info -->
+									<div class="booking-doc-info">
+										<a href="doctor-profile.html" class="booking-doc-img">
+											<img src="{{ subsubcategory.image.url }}" alt="User Image">
+										</a>
+										<div class="booking-info">
+											<h4><a href="doctor-profile.html">{{ subsubcategory.name }}</a></h4>
+											<div class="rating">
+												<i class="fas fa-star filled"></i>
+												<i class="fas fa-star filled"></i>
+												<i class="fas fa-star filled"></i>
+												<i class="fas fa-star filled"></i>
+												<i class="fas fa-star"></i>
+												<span class="d-inline-block average-rating">35</span>
+											</div>
+											<div class="clinic-details">
+												<i class="far fa-hourglass"></i>{{ subsubcategory.hours_taken}} Hours</i>
+											</div>
+										</div>
+									</div>
+									<!-- Booking Doctor Info -->
+									
+									<div class="booking-summary">
+										<div class="booking-item-wrap">
+											<ul class="booking-date">
+												<li> <span>{{ subsubcategory.description }}</span></li>
+												<br><br>
+											</ul>
+											
+											<div class="booking-total">
+												<ul class="booking-total-list">
+													<li>
+														<span>Total</span>
+														<span class="total-cost"> {{ subsubcategory.price }}</span>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- /Booking Summary -->
+							
+						</div>
+					</div>
+
+				</div>
+
+			</div>		
+			<!-- /Page Content -->
+   
+			
+		   
+		</div>
+		<!-- /Main Wrapper -->
+	  
+		<!-- jQuery -->
+		<script src="{%static "assets/js/jquery.min.js"%}"></script>
+		
+		<!-- Bootstrap Core JS -->
+		<script src="{%static "assets/js/popper.min.js"%}"></script>
+		<script src="{%static "assets/js/bootstrap.min.js"%}"></script>
+		
+		<!-- Sticky Sidebar JS -->
+        <script src="{%static "assets/plugins/theia-sticky-sidebar/ResizeSensor.js"%}"></script>
+        <script src="{%static "assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js"%}"></script>
+		
+		<!-- Custom JS -->
+		<script src="{%static "assets/js/script.js"%}"></script>
+		
+
+		
+	</body>
+
+<!-- doccure/checkout.html  30 Nov 2019 04:12:16 GMT -->
+</html>
+
+{% comment %} {% extends 'vehicle/customerbase.html' %}
 {% load widget_tweaks %}
 {% block content %}
 <head>
@@ -107,179 +318,9 @@
 
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-{% endblock content %}
+{% endblock content %} {% endcomment %}
 
 
 
 
 
-{% comment %} <!DOCTYPE html> 
-<html lang="en">
-    {% load static %}
-<!-- doccure/checkout.html  30 Nov 2019 04:12:16 GMT -->
-<head>
-		<meta charset="utf-8">
-		<title>SplashPaintZone</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-		
-		<!-- Favicons -->
-		<link href="{%static 'assets/img/favicon.png'%}" rel="icon">
-		
-		<!-- Bootstrap CSS -->
-        	<link rel="stylesheet" href="{%static 'assets/css/bootstrap.min.css'%}">
-		<!-- Fontawesome CSS -->
-		<link rel="stylesheet" href="{%static 'assets/plugins/fontawesome/css/fontawesome.min.css'%}">
-		<link rel="stylesheet" href="{%static 'assets/plugins/fontawesome/css/all.min.css'%}">
-		
-		<!-- Main CSS -->
-		<link rel="stylesheet" href="{%static 'assets/css/style.css'%}">
-		
-		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-		<!--[if lt IE 9]>
-			<script src="assets/js/html5shiv.min.js"></script>
-			<script src="assets/js/respond.min.js"></script>
-		<![endif]-->
-	
-	</head>
-	<body>
-
-		<!-- Main Wrapper -->
-		<div class="main-wrapper">
-		
-			<!-- Header -->
-			<header class="header">
-				<nav class="navbar navbar-expand-lg header-nav">
-					<div class="navbar-header">
-						<a id="mobile_btn" href="javascript:void(0);">
-							<span class="bar-icon">
-								<span></span>
-								<span></span>
-								<span></span>
-							</span>
-						</a>
-						<a href="index-2.html" class="navbar-brand logo">
-							<img src="assets/img/logo.png" class="img-fluid" alt="Logo">
-						</a>
-					</div>
-					<div class="main-menu-wrapper">
-						<div class="menu-header">
-							
-			
-			<!-- Breadcrumb -->
-			
-			<!-- /Breadcrumb -->
-			
-			<!-- Page Content -->
-			<div class="content">
-				<div class="container">
-
-					<div class="row">
-						<div class="col-md-7 col-lg-8">
-							<div class="card">
-								<div class="card-body">
-								
-									
-											<form method="POST" enctype="multipart/form-data">
-                                                {% csrf_token %}
-                                                {{ form.as_p }}
-                                                <button type="submit">Book Now</button>
-                                            </form>
-											<!-- Submit Section -->
-											<div class="submit-section mt-4">
-												<button type="submit" class="btn btn-primary submit-btn">Confirm and Pay</button>
-											</div>
-											<!-- /Submit Section -->
-											
-										</div>
-									</form>
-									<!-- /Checkout Form -->
-									
-								</div>
-							</div>
-							
-						</div>
-						
-						<div class="col-md-5 col-lg-4 theiaStickySidebar">
-						
-							<!-- Booking Summary -->
-							<div class="card booking-card">
-								<div class="card-header">
-									<h4 class="card-title">Booking Summary</h4>
-								</div>
-								<div class="card-body">
-								
-									<!-- Booking Doctor Info -->
-									<div class="booking-doc-info">
-										<a href="doctor-profile.html" class="booking-doc-img">
-											<img src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
-										</a>
-										<div class="booking-info">
-											<h4><a href="doctor-profile.html"><h2>{{ subsubcategory.name }}</h2></a></h4>
-											<div class="rating">
-												<i class="fas fa-star filled"></i>
-												<i class="fas fa-star filled"></i>
-												<i class="fas fa-star filled"></i>
-												<i class="fas fa-star filled"></i>
-												<i class="fas fa-star"></i>
-												<span class="d-inline-block average-rating">35</span>
-											</div>
-											<div class="clinic-details">
-												<p class="doc-location"><i class="fas fa-map-marker-alt"></i> Newyork, USA</p>
-											</div>
-										</div>
-									</div>
-									<!-- Booking Doctor Info -->
-									
-									<div class="booking-summary">
-										<div class="booking-item-wrap">
-											<ul class="booking-date">
-												<li>Date <span>16 Nov 2019</span></li>
-												<li>Time <span>10:00 AM</span></li>
-											</ul>
-											<ul class="booking-fee">
-												<li>Consulting Fee <span>$100</span></li>
-												<li>Booking Fee <span>$10</span></li>
-												<li>Video Call <span>$50</span></li>
-											</ul>
-											<div class="booking-total">
-												<ul class="booking-total-list">
-													<li>
-														<span>Total</span>
-														<span class="total-cost">$160</span>
-													</li>
-												</ul>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!-- /Booking Summary -->
-							
-						</div>
-					</div>
-
-				</div>
-
-			</div>		
-			<!-- /Page Content -->
-        </div>
-		
-		<!-- /Main Wrapper -->
-	  
-		<!-- jQuery -->
-		<script src="{%static 'assets/js/jquery.min.js'%}"></script>
-		
-		<!-- Bootstrap Core JS -->
-        <script src="{%static 'assets/js/popper.min.js'%}"></script>
-		<script src="{%static 'assets/js/bootstrap.min.js'%}"></script>
-		
-		<!-- Sticky Sidebar JS -->
-        <script src="{%static 'assets/plugins/theia-sticky-sidebar/ResizeSensor.js'%}"></script>
-        <script src="{%static 'assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js'%}"></script>
-		
-		<!-- Custom JS -->
-        <script src="{%static 'assets/js/script.js'%}"></script>
-	</body>
-
-<!-- doccure/checkout.html  30 Nov 2019 04:12:16 GMT -->
-</html> {% endcomment %}
