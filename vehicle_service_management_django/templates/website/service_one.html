@@ -123,13 +123,13 @@
 								</div>
 							</div>{% endcomment %}
 							<!-- /Search Filter -->
-							<div class="breadcrumb-bar" style="background-color:#D81324 ;">
+							<div class="breadcrumb-bar" style="background-color:#D81324;width:1500px;">
 								<div class="container-fluid">
 									<div class="row align-items-center">
 										<div class="col-md-12 col-12">
 											<nav aria-label="breadcrumb" class="page-breadcrumb">
 												<ol class="breadcrumb">
-													<li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
+													<li class="breadcrumb-item"><a href="{%url 'users-home'%}">Home</a></li>
 													<li class="breadcrumb-item active" aria-current="page">Diagnostic Test</li>
 												</ol>
 											</nav>
@@ -138,8 +138,8 @@
 									</div>
 								</div>
 							</div>	
-					</div> 
-						<div class="col-md-12 col-lg-8 col-xl-9">
+					</div> </div>
+						<div class="col-md-12 col-lg-8 col-xl-9" style="margin-top:60px;margin-left:50px;">
 							{% for subsubcategory in subsubcategories %}
 							<!-- Doctor Widget -->
 							{% if forloop.counter <= 2 %}

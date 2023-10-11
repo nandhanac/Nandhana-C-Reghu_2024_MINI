@@ -61,7 +61,7 @@ class AdminRequestForm(forms.Form):
 
 class AdminApproveRequestForm(forms.Form):
     mechanic=forms.ModelChoiceField(queryset=models.Mechanic.objects.all(),empty_label="Mechanic Name",to_field_name='id')
-    cost=forms.IntegerField()
+
     stat=(('Pending','Pending'),('Approved','Approved'),('Released','Released'))
     status=forms.ChoiceField( choices=stat)
 

@@ -17,12 +17,9 @@
 						<table>
 							<thead>
                 <tr>
-                  <th>Vehicle Name</th>
-                  <th>Category</th>
-                  <th>Number</th>
-                  <th>Model</th>
-                  <th>Brand</th>
-                  <th>Problem Description</th>
+                  <th>Name</th>
+                  <th>Appointment Date</th>
+                  <th>Selected Subsubcategory</th>
                   <th>Status</th>
                   <th>Update Status</th>
                 </tr>
@@ -30,12 +27,9 @@
 							<tbody>
               {% for w in works %}
                 <tr>
-                  <td> {{w.vehicle_name}}</td>
-                  <td> {{w.category}}</td>
-                  <td> {{w.vehicle_no}}</td>
-                  <td> {{w.vehicle_model}}</td>
-                  <td> {{w.vehicle_brand}}</td>
-                  <td> {{w.problem_description}}</td>
+                  <td> {{w.name}}</td>
+                  <td> {{w.appointment_date}}</td>
+                  <td> {{w.selected_subsubcategory}}</td>
                   <td>{{w.status}}</td>
                   <td><a  style="color:blue; text-decoration:none;font-size:25px;" href="{% url 'mechanic-update-status' w.id  %}">&#9998;</a></td>
                 </tr>

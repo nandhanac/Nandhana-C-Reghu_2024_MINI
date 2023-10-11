@@ -134,6 +134,15 @@ class Booking(models.Model):
     
     selected_subsubcategory = models.ForeignKey(SubSubcategory, on_delete=models.CASCADE)
 
+    selected_car_model = models.ForeignKey(CarModel, on_delete=models.CASCADE, null=True)
+    selected_car_name = models.ForeignKey(CarName, on_delete=models.CASCADE, null=True)
+    selected_type = models.ForeignKey(Type, on_delete=models.CASCADE, null=True)
+    
+    stat=(('Pending','Pending'),('Approved','Approved'),('Repairing','Repairing'),('Repairing Done','Repairing Done'),('Released','Released'))
+    status=models.CharField(max_length=50,choices=stat,default='Pending',null=True)
+    customer=models.ForeignKey('Customer', on_delete=models.CASCADE,null=True)
+    mechanic=models.ForeignKey('Mechanic',on_delete=models.CASCADE,null=True)
+
     def save(self, *args, **kwargs):
         if self.selected_subsubcategory:
             self.selected_service_price = self.selected_subsubcategory.price

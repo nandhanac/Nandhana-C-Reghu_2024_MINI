@@ -13,7 +13,7 @@ from django.contrib.auth.views import  PasswordResetView, PasswordChangeView
 
 
 
-from .models import Category,Subcategory,SubSubcategory,CarModel,CarName, Type,Booking
+from .models import Category,Subcategory,SubSubcategory,CarModel,CarName, Type,Booking,Customer
 from .forms import CategoryForm,SubcategoryForm,SubSubcategoryForm,CarModelForm, CarNameForm,TypeForm,BookingForm
 
 def home_view(request):
@@ -127,14 +127,22 @@ def types(request):
 #     return render(request, 'website/booking.html', context)
 
 
-def book_service(request, subsubcategory_id):
+def book_service(request, subsubcategory_id,car_model_id,car_name_id,type_id):
     subsubcategory = get_object_or_404(SubSubcategory, pk=subsubcategory_id)
+    customer = Customer.objects.get(user=request.user)
+    car_model = get_object_or_404(CarModel, pk=car_model_id)
+    car_name = get_object_or_404(CarName, pk=car_name_id)
+    type = get_object_or_404(Type, pk=type_id)
 
     if request.method == 'POST':
         form = BookingForm(request.POST,request.FILES)
         if form.is_valid():
             booking = form.save(commit=False)
             booking.selected_subsubcategory = subsubcategory
+            booking.customer = customer
+            booking.selected_car_model = car_model
+            booking.selected_car_name = car_name
+            booking.selected_type = type
             booking.name = request.user.first_name
             booking.save()
             return redirect('booking_confirmation',booking.id)
@@ -257,6 +265,7 @@ def afterlogin_view(request):
 @login_required(login_url='adminlogin')
 def admin_dashboard_view(request):
     enquiry=models.Request.objects.all().order_by('-id')
+    booking = Booking.objects.all()
     customers=[]
     for enq in enquiry:
         customer=models.Customer.objects.get(id=enq.customer_id)
@@ -264,7 +273,7 @@ def admin_dashboard_view(request):
     dict={
     'total_customer':models.Customer.objects.all().count(),
     'total_mechanic':models.Mechanic.objects.all().count(),
-    'total_request':models.Request.objects.all().count(),
+    'total_request':models.Booking.objects.all().count(),
     'total_feedback':models.Feedback.objects.all().count(),
     'data':zip(customers,enquiry),
     }
@@ -633,7 +642,7 @@ def admin_request_view(request):
 
 @login_required(login_url='adminlogin')
 def admin_view_request_view(request):
-    booking = Booking.objects.all()
+    booking = Booking.objects.select_related('selected_car_model', 'selected_car_name', 'selected_type').all()
     return render(request, 'vehicle/admin_view_request.html', {'booking': booking})
 
 
@@ -643,9 +652,9 @@ def change_status_view(request,pk):
     if request.method=='POST':
         adminenquiry=forms.AdminApproveRequestForm(request.POST)
         if adminenquiry.is_valid():
-            enquiry_x=models.Request.objects.get(id=pk)
+            enquiry_x=models.Booking.objects.get(id=pk)
             enquiry_x.mechanic=adminenquiry.cleaned_data['mechanic']
-            enquiry_x.cost=adminenquiry.cleaned_data['cost']
+            
             enquiry_x.status=adminenquiry.cleaned_data['status']
             enquiry_x.save()
         else:
@@ -656,7 +665,7 @@ def change_status_view(request,pk):
 
 @login_required(login_url='adminlogin')
 def admin_delete_request_view(request,pk):
-    requests=models.Request.objects.get(id=pk)
+    requests=models.Booking.objects.get(id=pk)
     requests.delete()
     return redirect('admin-view-request')
 
@@ -684,8 +693,8 @@ def admin_add_request_view(request):
 
 @login_required(login_url='adminlogin')
 def admin_approve_request_view(request):
-    enquiry=models.Request.objects.all().filter(status='Pending')
-    return render(request,'vehicle/admin_approve_request.html',{'enquiry':enquiry})
+    booking=models.Booking.objects.all().filter(status='Pending')
+    return render(request,'vehicle/admin_approve_request.html',{'booking':booking})
 
 @login_required(login_url='adminlogin')
 def approve_request_view(request,pk):
@@ -693,9 +702,8 @@ def approve_request_view(request,pk):
     if request.method=='POST':
         adminenquiry=forms.AdminApproveRequestForm(request.POST)
         if adminenquiry.is_valid():
-            enquiry_x=models.Request.objects.get(id=pk)
+            enquiry_x=models.Booking.objects.get(id=pk)
             enquiry_x.mechanic=adminenquiry.cleaned_data['mechanic']
-            enquiry_x.cost=adminenquiry.cleaned_data['cost']
             enquiry_x.status=adminenquiry.cleaned_data['status']
             enquiry_x.save()
         else:
@@ -828,32 +836,37 @@ def customer_request_view(request):
 @login_required(login_url='customerlogin')
 @user_passes_test(is_customer)
 def customer_view_request_view(request):
+    if request.user.is_authenticated:
+        print("User is authenticated")
+        print("User ID:", request.user.id)
     customer=models.Customer.objects.get(user_id=request.user.id)
-    enquiries=models.Request.objects.all().filter(customer_id=customer.id , status="Pending")
-    return render(request,'vehicle/customer_view_request.html',{'customer':customer,'enquiries':enquiries})
+    booking=models.Booking.objects.filter(customer_id=customer.id , status="Pending")
+    print("Customer:", customer)  # Check if customer data is retrieved
+    print("Bookings:", booking) 
+    return render(request,'vehicle/customer_view_request.html',{'customer':customer,'booking':booking})
 
 
 @login_required(login_url='customerlogin')
 @user_passes_test(is_customer)
 def customer_delete_request_view(request,pk):
     customer=models.Customer.objects.get(user_id=request.user.id)
-    enquiry=models.Request.objects.get(id=pk)
-    enquiry.delete()
+    booking=models.Booking.objects.get(id=pk)
+    booking.delete()
     return redirect('customer-view-request')
 
 @login_required(login_url='customerlogin')
 @user_passes_test(is_customer)
 def customer_view_approved_request_view(request):
-    customer=models.Customer.objects.get(user_id=request.user.id)
-    enquiries=models.Request.objects.all().filter(customer_id=customer.id).exclude(status='Pending')
-    return render(request,'vehicle/customer_view_approved_request.html',{'customer':customer,'enquiries':enquiries})
+    customer = models.Customer.objects.get(user=request.user)
+    booking = models.Booking.objects.filter(customer=customer).exclude(status="Pending")
+    return render(request,'vehicle/customer_view_approved_request.html',{'customer':customer,'booking':booking})
 
 @login_required(login_url='customerlogin')
 @user_passes_test(is_customer)
 def customer_view_approved_request_invoice_view(request):
     customer=models.Customer.objects.get(user_id=request.user.id)
-    enquiries=models.Request.objects.all().filter(customer_id=customer.id).exclude(status='Pending')
-    return render(request,'vehicle/customer_view_approved_request_invoice.html',{'customer':customer,'enquiries':enquiries})
+    booking=models.Booking.objects.all().filter(customer_id=customer.id).exclude(status='Pending')
+    return render(request,'vehicle/customer_view_approved_request_invoice.html',{'customer':customer,'booking':booking})
 
 
 
@@ -861,9 +874,9 @@ def customer_view_approved_request_invoice_view(request):
 @user_passes_test(is_customer)
 def customer_add_request_view(request):
     customer=models.Customer.objects.get(user_id=request.user.id)
-    enquiry=forms.RequestForm()
+    enquiry=forms.BookingForm()
     if request.method=='POST':
-        enquiry=forms.RequestForm(request.POST)
+        enquiry=forms.BookingForm(request.POST)
         if enquiry.is_valid():
             customer=models.Customer.objects.get(user_id=request.user.id)
             enquiry_x=enquiry.save(commit=False)
@@ -957,7 +970,7 @@ def mechanic_dashboard_view(request):
 @user_passes_test(is_mechanic)
 def mechanic_work_assigned_view(request):
     mechanic=models.Mechanic.objects.get(user_id=request.user.id)
-    works=models.Request.objects.all().filter(mechanic_id=mechanic.id)
+    works=models.Booking.objects.all().filter(mechanic_id=mechanic.id)
     return render(request,'vehicle/mechanic_work_assigned.html',{'works':works,'mechanic':mechanic})
 
 
@@ -969,7 +982,7 @@ def mechanic_update_status_view(request,pk):
     if request.method=='POST':
         updateStatus=forms.MechanicUpdateStatusForm(request.POST)
         if updateStatus.is_valid():
-            enquiry_x=models.Request.objects.get(id=pk)
+            enquiry_x=models.Booking.objects.get(id=pk)
             enquiry_x.status=updateStatus.cleaned_data['status']
             enquiry_x.save()
         else:
