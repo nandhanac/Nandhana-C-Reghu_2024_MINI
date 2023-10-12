@@ -209,7 +209,7 @@
 												{% comment %} <a class="view-pro-btn" href="doctor-profile.html">View Profile</a> {% endcomment %}
 												{% comment %} <a class="apt-btn"style="background-color:#D81324; border: 2px solid #D81324;" href="booking.html">select car</a> {% endcomment %}
 											<!-- Button to trigger the modal -->
-											 <a class="btn btn-block btn-outline-primary select-button" style="background-color:#D81324; border: 2px solid #D81324;" href="{% url 'selectcar' subsubcategory_id=subsubcategory.id %}">Select Car</a> 
+											 <a class="btn btn-block btn-outline-primary select-button" style="background-color:#D81324; border: 2px solid #D81324;"onclick="selectCarModel('{{ car_model.id }}')" href="{% url 'selectcar' subsubcategory_id=subsubcategory.id %}">Select Car</a> 
 											{% comment %} <a href="{% url 'book_service' subsubcategory.id %}" class="btn btn-primary">Book Now</a> {% endcomment %}
 											<!-- Modal -->
 											

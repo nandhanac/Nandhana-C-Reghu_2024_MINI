@@ -32,6 +32,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+    
 </head>
 <body>
 
@@ -54,63 +55,53 @@
     </div>	
 </div> 
     <!-- Header -->
-    <div class="header">
-        <div class="main" style="margin-left: 100px;">
-            
-            <section class="comp-section comp-cards">
-                <div class="comp-header">
-                   <br><br><br><h3 class="comp-title">Select Your Model</h3>
-                    <div class="line"></div>
-                </div>
-                
-                <div class="row">
-                    {% for car_model in car_models %}
-                    <div class="col-12 col-md-6 col-lg-4 d-flex">
-                        <div class="card flex-fill">
-                            <!-- Image container with data-toggle and data-target attributes to trigger the modal -->
-                            <img alt="Card Image" src="{{ car_model.image.url }}" class="card-img-top car-image" style="width: 100px; height: 100px;" data-toggle="modal" data-target="#carNamesModal">
-                            <div class="card-header">
-                                <h5 class="card-title mb-0">{{ car_model.name }}</h5>
-                            </div>
+   <!-- Inside your HTML template 'select_car.html' -->
+<div class="header">
+    <div class="main" style="margin-left: 100px;">
+        <section class="comp-section comp-cards">
+            <div class="comp-header">
+                <br><br><br><h3 class="comp-title">Select Your Model</h3>
+                <div class="line"></div>
+            </div>
+            <div class="row">
+                {% for car_model in car_models %}
+                <div class="col-12 col-md-6 col-lg-4 d-flex">
+                    <div class="card flex-fill" data-car-model-id="{{ car_model.id }}"data-toggle="modal" data-target="#carNamesModal-{{ car_model.id }}">
+                        <img alt="Card Image" src="{{ car_model.image.url }}" class="card-img-top car-image" style="width: 100px; height: 100px;" >
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">{{ car_model.name }}</h5>
                         </div>
                     </div>
-                    {% endfor %}
                 </div>
-            </section>
-            
-        </div>
-        <!-- /Page Wrapper -->
+                {% endfor %}
+            </div>
+        </section>
     </div>
 </div>
-<!-- /Main Wrapper -->
 
 <!-- Modal for Car Names -->
-<div class="modal fade" id="carNamesModal" tabindex="-1" role="dialog" aria-labelledby="carNamesModalLabel" aria-hidden="true">
+
+{% for car_model, car_names in car_names_by_model.items %}
+<div class="modal fade" id="carNamesModal-{{ car_model.id }}" tabindex="-1" role="dialog" aria-labelledby="carNamesModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="carNamesModalLabel">Car Names</h5>
+                <h5 class="modal-title" id="carNamesModalLabel">Car Names for {{ car_model.name }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-             
-					{% for car_name in create_car_name %}
-					
-					{% comment %} <div class="col-6 col-sm-4 col-md-2 col-xl mb-3 mb-xl-0"> {% endcomment %}
-						<button type="button" class="btn btn-block btn-outline-primary"style="width: 100px;"data-toggle="modal" data-target="#cartypes">{{ car_name.name }} </button>
-					{% comment %} </div> {% endcomment %}
-                    {% comment %} {{ car_name.name }} {% endcomment %}
+                <ul>
+                    {% for car_name in car_names %}
+                        <button type="button" class="btn btn-outline-primary" style="width: 100px;"data-toggle="modal" data-target="#cartypes">{{ car_name.name }}</button>
                     {% endfor %}
-               
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </ul>
             </div>
         </div>
     </div>
 </div>
+{% endfor %}
 
 <!-- Modal for types -->
 <div class="modal fade" id="cartypes" tabindex="-1" role="dialog" aria-labelledby="carTypesModalLabel" aria-hidden="true">
@@ -123,9 +114,9 @@
                 </button>
             </div>
             <div class="modal-body">
-             
-				{% for type in types %}
                 <a href="{% url 'book_service' subsubcategory.id %}" >
+				{% for type in types %}
+               
 					{% comment %} <div class="col-6 col-sm-4 col-md-2 col-xl mb-3 mb-xl-0"> 
 						<button type="button" class="btn btn-block btn-outline-primary"style="width: 100px;">{{ car_name.name }} </button>
 					 </div> 

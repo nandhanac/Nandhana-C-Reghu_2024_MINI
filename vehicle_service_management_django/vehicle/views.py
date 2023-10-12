@@ -65,12 +65,64 @@ def service_two(request, category_id):
 #     car_models = CarModel.objects.all()
 #     return render(request,'website/select_car.html',{'car_models': car_models,})
 
-def selectcar(request,subsubcategory_id):
+# def selectcar(request,subsubcategory_id):
+#      subsubcategory = get_object_or_404(SubSubcategory, pk=subsubcategory_id)
+#      car_models = CarModel.objects.all()
+#      create_car_name = CarName.objects.all()
+#      types = Type.objects.all()
+#      return render(request, 'website/select_car.html', {'car_models': car_models, 'create_car_name': create_car_name, 'types': types, 'subsubcategory': subsubcategory})
+
+# def selectcar(request, subsubcategory_id):
+#     subsubcategory = get_object_or_404(SubSubcategory, pk=subsubcategory_id)
+    
+#     # Fetch all car models
+#     car_models = CarModel.objects.all()
+
+#     # Create a dictionary to store car names by car model
+#     car_names_by_model = {}
+
+#     for car_model in car_models:
+#         # Get car names associated with the car model
+#         car_names = CarName.objects.filter(car_model=car_model)
+#         car_names_by_model[car_model] = car_names
+
+#     # Fetch all types (not sure if you need this for printing)
+#     types = Type.objects.all()
+
+#     # Print car models and their corresponding car names
+#     for car_model, car_names in car_names_by_model.items():
+#         print(f"Car Model: {car_model.name}")
+#         for car_name in car_names:
+#             print(f"  Car Name: {car_name.name}")
+
+#     return render(request, 'website/select_car.html', {'car_models': car_models, 'car_names_by_model': car_names_by_model, 'types': types, 'subsubcategory': subsubcategory})
+
+
+def selectcar(request, subsubcategory_id):
     subsubcategory = get_object_or_404(SubSubcategory, pk=subsubcategory_id)
+    
+    # Fetch all car models
     car_models = CarModel.objects.all()
-    create_car_name = CarName.objects.all()
+
+    # Create a dictionary to store car names by car model
+    car_names_by_model = {}
+
+    for car_model in car_models:
+        # Get car names associated with the car model
+        car_names = CarName.objects.filter(car_model=car_model)
+        car_names_by_model[car_model] = car_names
+
+    # Fetch all types (not sure if you need this for printing)
     types = Type.objects.all()
-    return render(request, 'website/select_car.html', {'car_models': car_models, 'create_car_name': create_car_name, 'types': types, 'subsubcategory': subsubcategory})
+
+    # Render the 'select_car.html' template and pass the data
+    return render(request, 'website/select_car.html', {'car_models': car_models, 'car_names_by_model': car_names_by_model, 'types': types, 'subsubcategory': subsubcategory})
+
+
+
+
+
+
 
 def create_car_name(request):
     if request.method == 'POST':
@@ -127,12 +179,12 @@ def types(request):
 #     return render(request, 'website/booking.html', context)
 
 
-def book_service(request, subsubcategory_id,car_model_id,car_name_id,type_id):
+def book_service(request, subsubcategory_id):
     subsubcategory = get_object_or_404(SubSubcategory, pk=subsubcategory_id)
     customer = Customer.objects.get(user=request.user)
-    car_model = get_object_or_404(CarModel, pk=car_model_id)
-    car_name = get_object_or_404(CarName, pk=car_name_id)
-    type = get_object_or_404(Type, pk=type_id)
+    # car_model = get_object_or_404(CarModel, pk=car_model_id)
+    # car_name = get_object_or_404(CarName, pk=car_name_id)
+    # type = get_object_or_404(Type, pk=type_id)
 
     if request.method == 'POST':
         form = BookingForm(request.POST,request.FILES)
@@ -140,9 +192,9 @@ def book_service(request, subsubcategory_id,car_model_id,car_name_id,type_id):
             booking = form.save(commit=False)
             booking.selected_subsubcategory = subsubcategory
             booking.customer = customer
-            booking.selected_car_model = car_model
-            booking.selected_car_name = car_name
-            booking.selected_type = type
+            # booking.selected_car_model = car_model
+            # booking.selected_car_name = car_name
+            # booking.selected_type = type
             booking.name = request.user.first_name
             booking.save()
             return redirect('booking_confirmation',booking.id)
