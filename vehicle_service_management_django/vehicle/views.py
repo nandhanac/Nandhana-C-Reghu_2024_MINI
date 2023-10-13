@@ -20,18 +20,37 @@ def home_view(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect('afterlogin')
     return render(request,'vehicle/index.html')
+# def home(request):
+
+#     denting_painting_category = Category.objects.get(name="Denting & Painting")
+
+#     # Include the category ID in the context
+#     context = {
+#         'category_id': denting_painting_category.id,
+#     }
+
+#     return render(request, 'vehicle/customerpage.html', context)
+def about(request):
+     return render(request, 'website/about.html')
+
 def home(request):
-
+    diagnostic_category= Category.objects.get(name="Diagnostic Test")
     denting_painting_category = Category.objects.get(name="Denting & Painting")
+    car_spa_category = Category.objects.get(name="Car Spa & Cleaning")
+    detailing_category = Category.objects.get(name="Detailing Service")
 
-    # Include the category ID in the context
+    # Include the category names in the context
     context = {
-        'category_id': denting_painting_category.id,
+        'category_id': denting_painting_category.id,'diagnostic_category':diagnostic_category,
+        'denting_painting_category_name': denting_painting_category.name,
+        'car_spa_category_name': car_spa_category.name,
+        'detailing_category_name': detailing_category.name,
     }
 
     return render(request, 'vehicle/customerpage.html', context)
-def about(request):
-    return render(request, 'website/about.html')
+
+
+
 def service_one(request):
     subsubcategories = SubSubcategory.objects.all()
     car_models = CarModel.objects.all()
@@ -43,23 +62,49 @@ def service_one(request):
 
 #     return render(request, 'website/service_two.html', {'subsubcategories': front_subsubcategories})
 
+# def service_two(request, category_id):
+#     # Retrieve the category based on the category_id
+#     category = get_object_or_404(Category, id=category_id)
+#     print(category)
+#     # Retrieve the subcategories and subsubcategories associated with the category
+#     subcategories = Subcategory.objects.filter(category=category)
+#     print(subcategories)
+#     subsubcategories = SubSubcategory.objects.filter(subcategory__category=category)
+#     print(subsubcategories)
+#     # Pass the category, subcategories, and subsubcategories to the template
+#     context = {
+#         'category': category,
+#         'subcategories': subcategories,
+#         'subsubcategories': subsubcategories,
+#     }
+
+#     return render(request, 'website/service_two.html', context)
+
+
 def service_two(request, category_id):
     # Retrieve the category based on the category_id
     category = get_object_or_404(Category, id=category_id)
-    print(category)
-    # Retrieve the subcategories and subsubcategories associated with the category
+
+    # Retrieve the subcategories associated with the category
     subcategories = Subcategory.objects.filter(category=category)
-    print(subcategories)
-    subsubcategories = SubSubcategory.objects.filter(subcategory__category=category)
-    print(subsubcategories)
-    # Pass the category, subcategories, and subsubcategories to the template
+
+    # Prepare a dictionary where keys are subcategories and values are lists of subsubcategories
+    subcategories_with_subsubcategories = {}
+    for subcategory in subcategories:
+        subsubcategories = SubSubcategory.objects.filter(subcategory=subcategory)
+        subcategories_with_subsubcategories[subcategory] = subsubcategories
+
+    # Pass the category and the dictionary to the template
     context = {
         'category': category,
-        'subcategories': subcategories,
-        'subsubcategories': subsubcategories,
+        'subcategories_with_subsubcategories': subcategories_with_subsubcategories,
     }
 
     return render(request, 'website/service_two.html', context)
+
+
+
+
 
 # def selectcar(request):
 #     car_models = CarModel.objects.all()
@@ -72,30 +117,6 @@ def service_two(request, category_id):
 #      types = Type.objects.all()
 #      return render(request, 'website/select_car.html', {'car_models': car_models, 'create_car_name': create_car_name, 'types': types, 'subsubcategory': subsubcategory})
 
-# def selectcar(request, subsubcategory_id):
-#     subsubcategory = get_object_or_404(SubSubcategory, pk=subsubcategory_id)
-    
-#     # Fetch all car models
-#     car_models = CarModel.objects.all()
-
-#     # Create a dictionary to store car names by car model
-#     car_names_by_model = {}
-
-#     for car_model in car_models:
-#         # Get car names associated with the car model
-#         car_names = CarName.objects.filter(car_model=car_model)
-#         car_names_by_model[car_model] = car_names
-
-#     # Fetch all types (not sure if you need this for printing)
-#     types = Type.objects.all()
-
-#     # Print car models and their corresponding car names
-#     for car_model, car_names in car_names_by_model.items():
-#         print(f"Car Model: {car_model.name}")
-#         for car_name in car_names:
-#             print(f"  Car Name: {car_name.name}")
-
-#     return render(request, 'website/select_car.html', {'car_models': car_models, 'car_names_by_model': car_names_by_model, 'types': types, 'subsubcategory': subsubcategory})
 
 
 def selectcar(request, subsubcategory_id):
@@ -197,7 +218,13 @@ def book_service(request, subsubcategory_id):
             # booking.selected_type = type
             booking.name = request.user.first_name
             booking.save()
-            return redirect('booking_confirmation',booking.id)
+            if booking.payment_method == 'Cash':
+                return redirect('booking_confirmation', booking.id)
+            elif booking.payment_method == 'Online':
+                # Redirect to the payment page for online payment
+                # Replace 'payment_page' with your actual payment page URL
+                return redirect('payment_page')
+            
 
     else:
         # form = BookingForm()

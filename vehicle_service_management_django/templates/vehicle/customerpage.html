@@ -527,7 +527,7 @@
                             </div>
                         </div> <a href="{%url 'service_one'%}"> 
                         <div class="bg-light text-center p-4">
-                            <h5 class="fw-bold mb-0">Diagnostic Test</h5><br>
+                            <h5 class="fw-bold mb-0">{{diagnostic_category}}</h5><br>
                             <img class="img-fluid" src="{% static 'images/ser1.png' %}" alt="" style="width:50px;height:60px;">
                         
                         </div>
@@ -546,7 +546,7 @@
                         </div>
                         <a href="{% url 'service_two' category_id=category_id   %}"> 
                         <div class="bg-light text-center p-4">
-                            <h5 class="fw-bold mb-0">Denting & Painting</h5>
+                            <h5 class="fw-bold mb-0">{{ denting_painting_category_name }}</h5>
                             <br>
                             <img class="img-fluid" src="{% static 'images/ser2.png' %}" alt="" style="width:50px;height:60px;">
                         </div>
@@ -563,7 +563,7 @@
                             </div>
                         </div>
                         <div class="bg-light text-center p-4">
-                            <h5 class="fw-bold mb-0">Car Spa & Cleaning</h5>
+                            <h5 class="fw-bold mb-0">{{ car_spa_category_name }}</h5>
                             <br>
                             <img class="img-fluid" src="{% static 'images/ser3.png' %}" alt="" style="width:50px;height:60px;">
                         </div>
@@ -580,7 +580,7 @@
                             </div>
                         </div>
                         <div class="bg-light text-center p-4">
-                            <h5 class="fw-bold mb-0">Detailing Service</h5>
+                            <h5 class="fw-bold mb-0">{{ detailing_category_name }}</h5>
                             <br>
                             <img class="img-fluid" src="{% static 'images/ser4.png' %}" alt="" style="width:50px;height:60px;">
                         </div>

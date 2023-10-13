@@ -143,6 +143,13 @@ class Booking(models.Model):
     customer=models.ForeignKey('Customer', on_delete=models.CASCADE,null=True)
     mechanic=models.ForeignKey('Mechanic',on_delete=models.CASCADE,null=True)
 
+    PAYMENT_CHOICES = [
+        ('Cash', 'Cash on Service'),
+        ('Online', 'Online Pay'),
+    ]
+
+    payment_method = models.CharField(max_length=10, choices=PAYMENT_CHOICES,null=True)
+
     def save(self, *args, **kwargs):
         if self.selected_subsubcategory:
             self.selected_service_price = self.selected_subsubcategory.price

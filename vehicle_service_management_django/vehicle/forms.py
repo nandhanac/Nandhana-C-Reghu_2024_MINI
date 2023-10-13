@@ -203,7 +203,7 @@ class TypeForm(forms.ModelForm):
 class BookingForm(forms.ModelForm):
     class Meta:
         model = Booking
-        fields = ['appointment_date', 'name', 'address', 'Alternative_mobile']
+        fields = ['appointment_date', 'name', 'address', 'Alternative_mobile','payment_method']
         widgets = {
             'appointment_date': forms.DateInput(attrs={
                 'type': 'date',
@@ -224,7 +224,12 @@ class BookingForm(forms.ModelForm):
                 'placeholder': 'Enter 10-digit phone number',  # Placeholder text
                 'pattern': '[0-9]{10}',  # Pattern for 10-digit phone number
             }),
-        }
+    
+        } 
+        payment_method = forms.ChoiceField(
+        choices=Booking.PAYMENT_CHOICES,  # Provide the choices from your model
+        widget=forms.RadioSelect(attrs={'class': 'form-check-input'}),  # Render as a dropdown
+    )
     def clean_appointment_date(self):
         appointment_date = self.cleaned_data.get('appointment_date')
 

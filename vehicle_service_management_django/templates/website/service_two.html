@@ -48,98 +48,29 @@
 				<div class="container-fluid">
 
 					<div class="row">
-						<div class="col-md-12 col-lg-4 col-xl-3 theiaStickySidebar">
+						<div class="col-md-12 col-lg-4 col-xl-3">
 						
-							{% comment %} <!-- Search Filter -->
-							<div class="card search-filter">
-								<div class="card-header">
-									<h4 class="card-title mb-0">Search Filter</h4>
-								</div>
-								<div class="card-body">
-								<div class="filter-widget">
-									<div class="cal-icon">
-										<input type="text" class="form-control datetimepicker" placeholder="Select Date">
-									</div>			
-								</div>
-								<div class="filter-widget">
-									<h4>Gender</h4>
-									<div>
-										<label class="custom_check">
-											<input type="checkbox" name="gender_type" checked>
-											<span class="checkmark"></span> Male Doctor
-										</label>
-									</div>
-									<div>
-										<label class="custom_check">
-											<input type="checkbox" name="gender_type">
-											<span class="checkmark"></span> Female Doctor
-										</label>
-									</div>
-								</div>
-								<div class="filter-widget">
-									<h4>Select Specialist</h4>
-									<div>
-										<label class="custom_check">
-											<input type="checkbox" name="select_specialist" checked>
-											<span class="checkmark"></span> Urology
-										</label>
-									</div>
-									<div>
-										<label class="custom_check">
-											<input type="checkbox" name="select_specialist" checked>
-											<span class="checkmark"></span> Neurology
-										</label>
-									</div>
-									<div>
-										<label class="custom_check">
-											<input type="checkbox" name="select_specialist">
-											<span class="checkmark"></span> Dentist
-										</label>
-									</div>
-									<div>
-										<label class="custom_check">
-											<input type="checkbox" name="select_specialist">
-											<span class="checkmark"></span> Orthopedic
-										</label>
-									</div>
-									<div>
-										<label class="custom_check">
-											<input type="checkbox" name="select_specialist">
-											<span class="checkmark"></span> Cardiologist
-										</label>
-									</div>
-									<div>
-										<label class="custom_check">
-											<input type="checkbox" name="select_specialist">
-											<span class="checkmark"></span> Cardiologist
-										</label>
-									</div>
-								</div>
-									<div class="btn-search">
-										<button type="button" class="btn btn-block">Search</button>
-									</div>	
-								</div>
-							</div>{% endcomment %}
+							
 							<!-- /Search Filter --> 
-							{% for subcategories in subcategories %}
-							<div class="breadcrumb-bar" style="background-color:#D81324 ;">
+							{% for subcategory, subsubcategories in subcategories_with_subsubcategories.items %}
+							<div class="breadcrumb-bar" style="background-color:#D81324;width:1500px;">
 								<div class="container-fluid">
 									<div class="row align-items-center">
 										<div class="col-md-12 col-12">
 											<nav aria-label="breadcrumb" class="page-breadcrumb">
 												<ol class="breadcrumb">
 													<li class="breadcrumb-item"><a href="{%url 'users-home'%}">Home</a></li>
-													<li class="breadcrumb-item active" aria-current="page">{{subcategories.category}}</li>
+													<li class="breadcrumb-item active" aria-current="page">{{subcategory.category}}</li>
 												</ol>
 											</nav>
-											<h2 class="breadcrumb-title">{{subcategories}}</h2>
+											<h2 class="breadcrumb-title">{{subcategory}}</h2>
 										</div>
 									</div>
 								</div>
 							</div>	
-							{% endfor %}
+						
 					</div> 
-						<div class="col-md-12 col-lg-8 col-xl-9">
+						<div class="col-md-12 col-lg-8 col-xl-9"style="margin-top:60px;margin-left:50px;">
 							
 							<!-- Doctor Widget -->
 							{% for subsubcategory in subsubcategories %}
@@ -147,7 +78,7 @@
 							<div class="card">
 								<div class="card-body">
 									<div class="doctor-widget">
-										<li><i class="far fa-money-bill-alt"></i> {{ subsubcategory.subcategory}} </li>
+									
 										<div class="doc-info-left">
 											<div class="doctor-img">
 												<a href="doctor-profile.html">
@@ -188,14 +119,14 @@
 											</div>
 											<div class="clinic-booking">
 												{% comment %} <a class="view-pro-btn" href="doctor-profile.html">View Profile</a> {% endcomment %}
-												<a class="apt-btn" style="background-color:#D81324; border: 2px solid #D81324;" href="booking.html">Book Appointment</a>
+												<a class="btn btn-block btn-outline-primary select-button" style="background-color:#D81324; border: 2px solid #D81324;"onclick="selectCarModel('{{ car_model.id }}')" href="{% url 'selectcar' subsubcategory_id=subsubcategory.id %}">Select Car</a> 
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-							 {% comment %} {% endif %} {% endcomment %}
-							{% endfor %}
+							
+							{% endfor %}	{% endfor %}
 							<!-- /Doctor Widget -->
 							{% comment %} {% for subsubcategory in subsubcategories %}
 							 <!-- Doctor Widget -->

@@ -33,7 +33,78 @@
 		<div class="main-wrapper">
 		
 			<!-- Header -->
-			
+			<header class="header">
+				<nav class="navbar navbar-expand-lg header-nav">
+					<div class="navbar-header">
+						<a id="mobile_btn" href="javascript:void(0);">
+							<span class="bar-icon">
+								<span></span>
+								<span></span>
+								<span></span>
+							</span>
+						</a>
+						<a href="index-2.html" class="navbar-brand logo">
+							<h2 style="color:#D81324;" ><i class="fa fa-car me-3"></i>SPLASH PaintZone</h2>
+					</div>
+					<div class="main-menu-wrapper">
+						<div class="menu-header">
+							<a href="index-2.html" class="menu-logo">
+								<img src="assets/img/logo.png" class="img-fluid" alt="Logo">
+							</a>
+							<a id="menu_close" class="menu-close" href="javascript:void(0);">
+								<i class="fas fa-times"></i>
+							</a>
+						</div>
+						<ul class="main-nav">
+							<li>
+								<a href="index-2.html">Home</a>
+							</li>
+							<li class="has-submenu ">
+								<a href="{% url 'about' %}">About </a>
+							</li>	
+							<li class="has-submenu active">
+								<a href="#">Services</a>
+							</li>	
+							<li class="has-submenu">
+								<a href="#">Appointments <i class="fas fa-chevron-down"></i></a>
+								<ul class="submenu">
+									<li><a href="{%url 'customer-view-request'%}">View Request</a></li>
+									<li><a href="{%url 'customer-view-approved-request'%}">Approved Request</a></li>
+							
+						
+								</ul>
+							</li>
+							
+						</ul>
+					</div>		 
+					<ul class="nav header-navbar-rht">
+						
+							
+						<!-- User Menu -->
+						<li class="nav-item dropdown has-arrow logged-item">
+							<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+								<span class="user-img">
+									<h6>{{user.first_name.title}}</h6>
+								</span>
+							</a>
+							<div class="dropdown-menu dropdown-menu-right">
+							
+								<a class="dropdown-item" href="/customer-profile">
+									<i class="fas fa-user-tie"></i>
+								
+								<span>Profile</span></a>
+								<a class="dropdown-item" href="/logout" > 
+									<i class="fas fa-sign-out-alt"></i>
+								<span>Logout</span></a>
+								
+							</div>
+						</li>
+						<!-- /User Menu -->
+						
+					</ul>
+				</nav>
+			</header>
+			<!-- /Header -->
 			<!-- Breadcrumb -->
 			<div class="breadcrumb-bar"style="background-color:#D81324;">
 				<div class="container-fluid">
@@ -45,7 +116,7 @@
 									<li class="breadcrumb-item active" aria-current="page">Booking</li>
 								</ol>
 							</nav>
-							<h2 class="breadcrumb-title">Booking</h2>
+							<h2 class="breadcrumb-title"><a href="#" style="text-decoration:none; color:white;"onclick="goBack()">Booking</a></h2>
 						</div>
 					</div>
 				</div>
@@ -63,7 +134,7 @@
 								
 									<form method="post"enctype="multipart/form-data">
 										{% csrf_token %}
-										<div class="info-widget">
+										<div class="info-widget"style="margin-left:100px;">
 
 											<div id="error-message">
 												{% if form.errors %}
@@ -99,20 +170,21 @@
 												<label for="{{ form.appointment_date.id_for_label }}">Appointment Date</label>
 												{{ form.appointment_date }}
 											</div>
-										</div></div>
+										</div>
+										<div class="col-md-6 col-sm-12">
+											<div class="form-group card-label">
+												<label for="{{ form.payment_method.id_for_label }}">Payment Method</label>
+												{{ form.payment_method }}
+											</div>
+										</div>
 										<!-- Add other form fields here -->
 									
 									
-										<div class="payment-widget">
-											
-											
-											<!-- Submit Section -->
+										<div class="payment-widget"style="margin-left:100px;">
 											<div class="submit-section mt-4">
-												<button type="submit"style="background-color:#D81324;color: white; padding: 14px 20px; margin: 8px 0; border: none; border-radius: 4px; cursor: pointer;">Book Now</button>
-											</form> 
+												<button type="submit" class="btn btn-primary submit-btn"style="background-color:#D81324;color: white; padding: 14px 20px; margin: 8px 0; border: none; border-radius: 4px; cursor: pointer;">BOOK</button>
 											</div>
-											<!-- /Submit Section -->
-											
+										</div>
 										</div>
 									</form>
 									<!-- /Checkout Form -->
@@ -201,124 +273,18 @@
 		
 		<!-- Custom JS -->
 		<script src="{%static "assets/js/script.js"%}"></script>
-		
+		<script>
+			function goBack() {
+				window.history.back();
+			  }
+			 
+		</script>
 
 		
 	</body>
 
-<!-- doccure/checkout.html  30 Nov 2019 04:12:16 GMT -->
 </html>
 
-{% comment %} {% extends 'vehicle/customerbase.html' %}
-{% load widget_tweaks %}
-{% block content %}
-<head>
-  <style media="screen">
-    input[type=text], select,input[type=number] , textarea{
-    width: 300px;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-
-  input[type=submit] {
-    width: 300px;
-    
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  input[type=submit]:hover {
-    background-color: #45a049;
-  }
-.main
-{
-    margin-left:100px;
-}
-
-.card {
-    width: 500px;
-    margin: 0 auto;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.card-img-top {
-    max-height: 200px;
-    object-fit: cover;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-}
-
-.card-body {
-    padding: 20px;
-}
-
-.card-title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.card-text {
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-.container {
-    display: flex;
-    justify-content: space-between;
-	margin-top:-50px;
-    
-  }
-  .containercard
-  {
-    width: 45%;
-  
-      margin-left:300px;margin-right:50px; /*
-  }
-  </style>
-
-
-</head>
-
-
-
-<br><br><br><br><br>
-
-<div class="container">
-<div class="main">
-   
-
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        
-        <button type="submit"style="background-color:#D81324;color: white; padding: 14px 20px; margin: 8px 0; border: none; border-radius: 4px; cursor: pointer;">Book Now</button>
-    </form> </div>
-    <div class="containercard">
-    <div class="card" >
-        <img src="{{ subsubcategory.image.url }}" class="card-img-top" alt="{{ subsubcategory.name }}">
-        <div class="card-body">
-            <h5 class="card-title">{{ subsubcategory.name }}</h5>
-            <p class="card-text">Price: Rs. {{ subsubcategory.price }}</p>
-        </div>
-    </div>
-</div>
-</div>
-
-
-
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-{% endblock content %} {% endcomment %}
 
 
 
