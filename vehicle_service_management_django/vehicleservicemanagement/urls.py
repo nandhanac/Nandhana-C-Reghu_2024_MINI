@@ -23,7 +23,7 @@ path('delete-car-name/<int:car_name_id>/', views.delete_car_name, name='delete_c
 path('types/', views.types, name='types'),
 
  path('book/<int:subsubcategory_id>/', views.book_service, name='book_service'),
-path('confirmation/<int:booking_id>/', views.booking_confirmation, name='booking_confirmation'),
+path('confirmation/', views.booking_confirmation, name='booking_confirmation'),
 
    
    
@@ -49,7 +49,8 @@ path('confirmation/<int:booking_id>/', views.booking_confirmation, name='booking
     path('customersignup', views.customer_signup_view,name='customersignup'),
     path('mechanicsignup', views.mechanic_signup_view,name='mechanicsignup'),
 
-    
+    path('paymenthandler/', views.paymenthandler, name='paymenthandler'),
+    path('payment_confirmation', views.payment_confirmation, name='payment_confirmation'),
 
     path('customerlogin', LoginView.as_view(template_name='vehicle/customerlogin.html'),name='customerlogin'),
     path('mechaniclogin', LoginView.as_view(template_name='vehicle/mechaniclogin.html'),name='mechaniclogin'),

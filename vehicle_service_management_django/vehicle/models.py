@@ -140,7 +140,7 @@ class Booking(models.Model):
     
     stat=(('Pending','Pending'),('Approved','Approved'),('Repairing','Repairing'),('Repairing Done','Repairing Done'),('Released','Released'))
     status=models.CharField(max_length=50,choices=stat,default='Pending',null=True)
-    customer=models.ForeignKey('Customer', on_delete=models.CASCADE,null=True)
+    customer=models.ForeignKey(Customer, on_delete=models.CASCADE,null=True)
     mechanic=models.ForeignKey('Mechanic',on_delete=models.CASCADE,null=True)
 
     PAYMENT_CHOICES = [
@@ -159,3 +159,18 @@ class Booking(models.Model):
     def __str__(self):
         return self.name
     
+
+class Payment(models.Model):
+    PAYMENT_STATUS_CHOICES = [
+        ('Pending', 'Pending'),
+        ('Success', 'Success'),
+    ]
+
+    user = models.ForeignKey(Customer, on_delete=models.CASCADE, default=1)
+    payment_amount = models.DecimalField(max_digits=10, decimal_places=2, default=1)
+    payment_status = models.CharField(max_length=10, choices=PAYMENT_STATUS_CHOICES, default='Pending')
+    payment_date = models.DateTimeField(auto_now_add=True, null=True)  # Use auto_now_add=True for initial creation
+
+
+    def __str__(self):
+        return f"Payment ID: {self.id}, Status: {self.payment_status}"

@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'vehicle',
     'widget_tweaks',
-    'social_django',
+    'social_django',    
+
 ]
 
 MIDDLEWARE = [
@@ -159,3 +160,7 @@ EMAIL_HOST_PASSWORD = 'nandhana@2509' # host email password required
 # otherwise you will get SMTPAuthenticationError at /contactus
 # this process is required because google blocks apps authentication by default
 EMAIL_RECEIVING_USER = ['nandhanareghu8333@gmail.com'] # email on which you will receive messages sent from website
+
+
+RAZOR_KEY_ID = 'rzp_test_vvSNL4MBqyUUj5'
+RAZOR_KEY_SECRET = 'NgL9kO7fb31JNw3xuHqGTT2b'

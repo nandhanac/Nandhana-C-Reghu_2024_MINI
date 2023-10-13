@@ -13,7 +13,7 @@ from django.contrib.auth.views import  PasswordResetView, PasswordChangeView
 
 
 
-from .models import Category,Subcategory,SubSubcategory,CarModel,CarName, Type,Booking,Customer
+from .models import Category,Subcategory,SubSubcategory,CarModel,CarName, Type,Booking,Customer,Payment
 from .forms import CategoryForm,SubcategoryForm,SubSubcategoryForm,CarModelForm, CarNameForm,TypeForm,BookingForm
 
 def home_view(request):
@@ -198,46 +198,6 @@ def types(request):
 #     }
 
 #     return render(request, 'website/booking.html', context)
-
-
-def book_service(request, subsubcategory_id):
-    subsubcategory = get_object_or_404(SubSubcategory, pk=subsubcategory_id)
-    customer = Customer.objects.get(user=request.user)
-    # car_model = get_object_or_404(CarModel, pk=car_model_id)
-    # car_name = get_object_or_404(CarName, pk=car_name_id)
-    # type = get_object_or_404(Type, pk=type_id)
-
-    if request.method == 'POST':
-        form = BookingForm(request.POST,request.FILES)
-        if form.is_valid():
-            booking = form.save(commit=False)
-            booking.selected_subsubcategory = subsubcategory
-            booking.customer = customer
-            # booking.selected_car_model = car_model
-            # booking.selected_car_name = car_name
-            # booking.selected_type = type
-            booking.name = request.user.first_name
-            booking.save()
-            if booking.payment_method == 'Cash':
-                return redirect('booking_confirmation', booking.id)
-            elif booking.payment_method == 'Online':
-                # Redirect to the payment page for online payment
-                # Replace 'payment_page' with your actual payment page URL
-                return redirect('payment_page')
-            
-
-    else:
-        # form = BookingForm()
-        form = BookingForm(initial={'name': request.user.first_name})
-    return render(request, 'website/booking.html', {'form': form, 'subsubcategory': subsubcategory})
-
-
-
-
-def booking_confirmation(request,booking_id):
-    booking = get_object_or_404(Booking, pk=booking_id)
-    
-    return render(request, 'website/booking_confirmation.html', {'booking': booking})
 
 
 
@@ -1153,3 +1113,168 @@ def contactus_view(request):
             send_mail(str(name)+' || '+str(email),message,settings.EMAIL_HOST_USER, settings.EMAIL_RECEIVING_USER, fail_silently = False)
             return render(request, 'vehicle/contactussuccess.html')
     return render(request, 'vehicle/contactus.html', {'form':sub})
+
+
+
+def book_service(request, subsubcategory_id):
+    subsubcategory = get_object_or_404(SubSubcategory, pk=subsubcategory_id)
+    customer = Customer.objects.get(user=request.user)
+    # car_model = get_object_or_404(CarModel, pk=car_model_id)
+    # car_name = get_object_or_404(CarName, pk=car_name_id)
+    # type = get_object_or_404(Type, pk=type_id)
+
+    if request.method == 'POST':
+        form = BookingForm(request.POST,request.FILES)
+        if form.is_valid():
+            booking = form.save(commit=False)
+            booking.selected_subsubcategory = subsubcategory
+            booking.customer = customer
+            # booking.selected_car_model = car_model
+            # booking.selected_car_name = car_name
+            # booking.selected_type = type
+            booking.name = request.user.first_name
+            booking.save()
+            if booking.payment_method == 'Cash':
+                return redirect('booking_confirmation', booking.id)
+            elif booking.payment_method == 'Online':
+                # Redirect to the payment page for online payment
+                # Replace 'payment_page' with your actual payment page URL
+                return redirect('payment_confirmation')
+    else:
+        # form = BookingForm()
+        form = BookingForm(initial={'name': request.user.first_name})
+    return render(request, 'website/booking.html', {'form': form, 'subsubcategory': subsubcategory})
+
+
+
+
+def booking_confirmation(request):
+    
+    return render(request, 'website/booking_confirmation.html')
+
+
+import razorpay
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponseBadRequest
+from django.http import HttpResponse
+from django.contrib.auth.models import User  # Import the user model you are using
+
+ 
+# authorize razorpay client with API Keys.
+razorpay_client = razorpay.Client(
+    auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
+ 
+ 
+
+@login_required
+def payment_confirmation(request):
+    currency = 'INR'
+    user = request.user
+    customer, created = Customer.objects.get_or_create(user=user)
+
+    # Retrieve the booking associated with the current user (you may need to adjust the query depending on your model relationships)
+    booking = Booking.objects.filter(customer=customer).last()
+
+    if booking:
+        # Get the selected service's price from the booking
+        selected_service_price = booking.selected_subsubcategory.price
+
+        # Calculate the payment amount (if the service has a price)
+        if selected_service_price is not None:
+            amount = int(selected_service_price * 100)  # Convert to paisa
+        else:
+            amount = 0  # Default to 0 if price is not set
+    else:
+        amount = 0  # Default to 0 if there's no booking
+    
+    request.session['payment_amount'] = amount
+
+    # Create a Razorpay Order
+    razorpay_order = razorpay_client.order.create(dict(
+        amount=amount,
+        currency=currency,
+        payment_capture='0'
+    ))
+
+    # Get the current user
+    # Retrieve or create the associated Customer instance
+    # Order ID of the newly created order
+    razorpay_order_id = razorpay_order['id']
+    callback_url = '/paymenthandler/'
+
+    # Create a Payment for the appointment
+    payment = Payment.objects.create(
+        user=customer,
+        payment_amount=amount,
+        payment_status='Pending',
+    )
+
+    # Render the success template with the necessary context
+    context = {
+        'razorpay_order_id': razorpay_order_id,
+        'razorpay_merchant_key': settings.RAZOR_KEY_ID,
+        'razorpay_amount': amount,
+        'currency': currency,
+        'callback_url': callback_url,
+        'booking': booking,  # Pass the booking instance to the template
+
+    }
+    return render(request, 'website/payment_confirmation.html', context=context)
+ 
+ 
+# we need to csrf_exempt this url as
+# POST request will be made by Razorpay
+# and it won't have the csrf token.
+@csrf_exempt
+def paymenthandler(request):
+    if request.method == "POST":
+        try:
+            # Get the payment details from the POST request
+            payment_id = request.POST.get('razorpay_payment_id', '')
+            razorpay_order_id = request.POST.get('razorpay_order_id', '')
+            signature = request.POST.get('razorpay_signature', '')
+            amount = request.POST.get('razorpay_amount', '')
+
+            # Verify the payment signature
+            params_dict = {
+                'razorpay_order_id': razorpay_order_id,
+                'razorpay_payment_id': payment_id,
+                'razorpay_signature': signature,
+            }
+            result = razorpay_client.utility.verify_payment_signature(params_dict)
+
+            if result is not None:
+                if amount:
+                    try:
+                        amount = int(amount)
+                    except ValueError:
+                        # Handle the case where 'amount' is not a valid integer
+                        amount = 0  # Set a default value or handle the error condition as needed
+                else:
+                    amount = 0  # Set a default value (0) when 'amount' is an empty string
+
+                # Capture the payment
+                razorpay_client.payment.capture(payment_id, amount)
+                customer = Customer.objects.get(user=request.user)
+
+                # Save payment details to the Payment model
+                # Assuming you have a Payment model defined
+                payment = Payment.objects.create(
+                    user=customer,  # Assign the Customer instance
+                    payment_amount=amount,
+                    payment_status='Success',  # Assuming payment is successful
+                )
+
+                # Redirect to a success page with payment details
+                return redirect('booking_confirmation')  # Replace 'orders' with your actual success page name or URL
+            else:
+                # Signature verification failed
+                return HttpResponse("Payment signature verification failed", status=400)
+        except Exception as e:
+            # Handle exceptions gracefully
+            return HttpResponse(f"An error occurred: {str(e)}", status=500)
+    else:
+        # Handle non-POST requests
+        return HttpResponse("Invalid request method", status=405)
+
