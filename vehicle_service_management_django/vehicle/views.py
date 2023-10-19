@@ -1135,7 +1135,7 @@ def book_service(request, subsubcategory_id):
             booking.name = request.user.first_name
             booking.save()
             if booking.payment_method == 'Cash':
-                return redirect('booking_confirmation', booking.id)
+                return redirect('bookconfirm_cash', booking.id)
             elif booking.payment_method == 'Online':
                 # Redirect to the payment page for online payment
                 # Replace 'payment_page' with your actual payment page URL
@@ -1148,9 +1148,15 @@ def book_service(request, subsubcategory_id):
 
 
 
-def booking_confirmation(request):
-    
-    return render(request, 'website/booking_confirmation.html')
+def booking_confirmation(request, booking_id,payment_amount):
+    booking = get_object_or_404(Booking, pk=booking_id)
+    return render(request, 'website/booking_confirmation.html',{'booking': booking,'payment_amount':payment_amount})
+
+def bookconfirm_cash(request, booking_id):
+    booking = get_object_or_404(Booking, pk=booking_id)
+    return render(request, 'website/bookconfirm_cash.html',{'booking': booking})
+
+
 
 
 import razorpay
@@ -1189,6 +1195,8 @@ def payment_confirmation(request):
         amount = 0  # Default to 0 if there's no booking
     
     request.session['payment_amount'] = amount
+    request.session['booking_id'] = booking.pk
+
 
     # Create a Razorpay Order
     razorpay_order = razorpay_client.order.create(dict(
@@ -1220,6 +1228,8 @@ def payment_confirmation(request):
         'booking': booking,  # Pass the booking instance to the template
 
     }
+    messages.success(request, 'Payment amount has been saved. You will be redirected to the payment page.')
+
     return render(request, 'website/payment_confirmation.html', context=context)
  
  
@@ -1234,7 +1244,7 @@ def paymenthandler(request):
             payment_id = request.POST.get('razorpay_payment_id', '')
             razorpay_order_id = request.POST.get('razorpay_order_id', '')
             signature = request.POST.get('razorpay_signature', '')
-            amount = request.POST.get('razorpay_amount', '')
+            # amount = request.POST.get('razorpay_amount', '')
 
             # Verify the payment signature
             params_dict = {
@@ -1243,31 +1253,36 @@ def paymenthandler(request):
                 'razorpay_signature': signature,
             }
             result = razorpay_client.utility.verify_payment_signature(params_dict)
-
+            
             if result is not None:
-                if amount:
-                    try:
-                        amount = int(amount)
-                    except ValueError:
-                        # Handle the case where 'amount' is not a valid integer
-                        amount = 0  # Set a default value or handle the error condition as needed
-                else:
-                    amount = 0  # Set a default value (0) when 'amount' is an empty string
+                # if amount:
+                #     try:
+                #         amount = int(amount)
+                #     except ValueError:
+                #         # Handle the case where 'amount' is not a valid integer
+                #         amount = 0  # Set a default value or handle the error condition as needed
+                # else:
+                #     amount = 0  # Set a default value (0) when 'amount' is an empty string
+
+                payment_amount = request.session.get('payment_amount', 0)
+                booking_id = request.session.get('booking_id', 0)
 
                 # Capture the payment
-                razorpay_client.payment.capture(payment_id, amount)
+                razorpay_client.payment.capture(payment_id, payment_amount)
                 customer = Customer.objects.get(user=request.user)
 
                 # Save payment details to the Payment model
                 # Assuming you have a Payment model defined
                 payment = Payment.objects.create(
                     user=customer,  # Assign the Customer instance
-                    payment_amount=amount,
+                    payment_amount=payment_amount,
                     payment_status='Success',  # Assuming payment is successful
                 )
-
+                context = { 
+                    'payment_amount': payment_amount,
+                }
                 # Redirect to a success page with payment details
-                return redirect('booking_confirmation')  # Replace 'orders' with your actual success page name or URL
+                return redirect('booking_confirmation',booking_id=booking_id,payment_amount=payment_amount)  # Replace 'orders' with your actual success page name or URL
             else:
                 # Signature verification failed
                 return HttpResponse("Payment signature verification failed", status=400)

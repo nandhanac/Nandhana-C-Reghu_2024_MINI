@@ -164,3 +164,9 @@ EMAIL_RECEIVING_USER = ['nandhanareghu8333@gmail.com'] # email on which you will
 
 RAZOR_KEY_ID = 'rzp_test_vvSNL4MBqyUUj5'
 RAZOR_KEY_SECRET = 'NgL9kO7fb31JNw3xuHqGTT2b'
+
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_SECURE = False

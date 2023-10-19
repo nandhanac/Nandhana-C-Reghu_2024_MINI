@@ -23,9 +23,9 @@ path('delete-car-name/<int:car_name_id>/', views.delete_car_name, name='delete_c
 path('types/', views.types, name='types'),
 
  path('book/<int:subsubcategory_id>/', views.book_service, name='book_service'),
-path('confirmation/', views.booking_confirmation, name='booking_confirmation'),
+path('confirmation/<int:payment_amount>/<int:booking_id>/', views.booking_confirmation, name='booking_confirmation'),
 
-   
+ path('bookconfirm_cash/<int:booking_id>/', views.bookconfirm_cash, name='bookconfirm_cash'),  
    
    
    
