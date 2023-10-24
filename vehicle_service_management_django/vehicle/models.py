@@ -12,6 +12,7 @@ class Customer(models.Model):
     # address = models.CharField(max_length=40)
     
     mobile = models.CharField(max_length=20,null=False)
+    
    
     @property
     def get_name(self):
@@ -21,11 +22,18 @@ class Customer(models.Model):
         return self
     def __str__(self):
         return self.user.first_name
+    @property
+    def get_username(self):
+        return self.user.username
+
+
 
 class Mechanic(models.Model):
     JOB_CHOICES = (
         ('mechanic', 'Mechanic'),
         ('painter', 'Painter'),
+        ('Tester','Tester'),
+        ('Operator','Operator'),
     )
     user=models.OneToOneField(User,on_delete=models.CASCADE)
     profile_pic= models.ImageField(upload_to='profile_pic/MechanicProfilePic/',null=True,blank=True)
@@ -35,6 +43,7 @@ class Mechanic(models.Model):
     skill = models.CharField(max_length=500,null=True)
     salary=models.PositiveIntegerField(null=True)
     status=models.BooleanField(default=False)
+    
     @property
     def get_name(self):
         return self.user.first_name+" "+self.user.last_name

@@ -19,6 +19,7 @@ load_dotenv()
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
 STATIC_DIR=os.path.join(BASE_DIR,'static')
+MEDIA_URL = '/media/'
 MEDIA_ROOT=os.path.join(BASE_DIR,'static')
 
 
@@ -160,7 +161,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # EMAIL_HOST_PASSWORD = 'nandhana@2509' # host email password required
 
 
-LOGIN_REDIRECT_URL = 'users-home'
+LOGIN_REDIRECT_URL = '/afterlogin'
 LOGIN_URL = 'login'
 ADMIN_DASHBOARD_REDIRECT_URL='admin-dashboard'
 

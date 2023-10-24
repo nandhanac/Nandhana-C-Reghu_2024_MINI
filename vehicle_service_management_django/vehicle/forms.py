@@ -21,6 +21,11 @@ class CustomerForm(forms.ModelForm):
         model=models.Customer
         fields=['mobile']
 
+from django.contrib.auth.forms import AuthenticationForm
+
+class LoginForm(AuthenticationForm):
+    username = forms.CharField(max_length=150, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}))
 
 class MechanicUserForm(forms.ModelForm):
     class Meta:
@@ -32,7 +37,8 @@ class MechanicUserForm(forms.ModelForm):
 
 class MechanicForm(forms.ModelForm):
     job_title = forms.ChoiceField(
-        choices=[('select title', 'select title'),('mechanic', 'Mechanic'), ('painter', 'Painter')],
+        choices=[('select title', 'select title'),('mechanic', 'Mechanic'), ('painter', 'Painter'), ('Tester','Tester'),
+        ('Operator','Operator')],
         widget=forms.Select(attrs={'class': 'form-control'}),
         label='Job Title'
     )

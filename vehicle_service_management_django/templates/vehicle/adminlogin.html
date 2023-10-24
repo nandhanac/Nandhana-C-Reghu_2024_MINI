@@ -112,6 +112,10 @@ hr.new {
                     <div class="form-group">
                      <input type="submit" name="" value="Login">
                     </div>
+
+                    {% if form.non_field_errors %}
+                    <div class="text-danger"style="color:red;">{{ form.non_field_errors.0 }}</div>
+                {% endif %}
                 </form>
             </div>
         </div>

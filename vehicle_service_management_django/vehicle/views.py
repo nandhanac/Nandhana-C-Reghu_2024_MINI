@@ -297,6 +297,17 @@ def customer_signup_view(request):
     return render(request,'vehicle/customersignup.html',context=mydict)
 
 
+from django.contrib.auth import login
+from django.contrib.auth.views import LoginView
+from .forms import LoginForm  # Import the custom LoginForm
+
+class CustomLoginView(LoginView):
+    form_class = LoginForm  # Use the custom LoginForm
+
+    def form_invalid(self, form):
+        messages.error(self.request, "Invalid username or password")  # Display error message
+        return super().form_invalid(form)
+
 def mechanic_signup_view(request):
     userForm=forms.MechanicUserForm()
     mechanicForm=forms.MechanicForm()
@@ -324,19 +335,38 @@ def is_mechanic(user):
     return user.groups.filter(name='MECHANIC').exists()
 
 
+# def afterlogin_view(request):
+#     if is_customer(request.user):
+#         return redirect('users-home')
+#     elif is_mechanic(request.user):
+#         accountapproval=models.Mechanic.objects.all().filter(user_id=request.user.id,status=True)
+#         if accountapproval:
+#             return redirect('mechanic-dashboard')
+#         else:
+#             return render(request,'vehicle/mechanic_wait_for_approval.html')
+#     else:
+#         return redirect('admin-dashboard')
+
+
+@login_required
 def afterlogin_view(request):
     if is_customer(request.user):
+        # Redirect customer to 'users-home'
         return redirect('users-home')
+    elif request.user.is_superuser:
+        # Redirect admin to 'admin-dashboard'
+        return redirect('admin-dashboard')
     elif is_mechanic(request.user):
-        accountapproval=models.Mechanic.objects.all().filter(user_id=request.user.id,status=True)
-        if accountapproval:
+        # Redirect employee (mechanic) to 'mechanic-dashboard'
+        account_approval = models.Mechanic.objects.filter(user_id=request.user.id, status=True).first()
+        if account_approval:
             return redirect('mechanic-dashboard')
         else:
-            return render(request,'vehicle/mechanic_wait_for_approval.html')
+            # Handle the case where a mechanic is not approved
+            return render(request, 'vehicle/mechanic_wait_for_approval.html')
     else:
-        return redirect('admin-dashboard')
-
-
+        # Handle any other cases or roles
+        return redirect('users-home')  # Set an appropriate default URL
 
 
 #============================================================================================

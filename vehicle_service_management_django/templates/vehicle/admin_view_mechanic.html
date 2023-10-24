@@ -13,19 +13,31 @@
     <link rel="stylesheet" href="{% static 'plugins/datatables-buttons/css/buttons.bootstrap4.min.css'%}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css'%}">
+
+    <style>
+      /* CSS styles for images in the table */
+      table#example1 img {
+          
+          border: 1px solid #ccc; /* Add a border to the images */
+          margin: 5px; /* Add margin around the images */
+          width:25px;
+          height:25px;
+      }
+      
+    </style>
   </head> 
     <div class="wrapper">
       <section class="content-header">
         <div class="container-fluid">
           <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Customer Management</h1>
+            <h1>Employee Management</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="/admin-dashboard">Home</a></li>
-            <li class="breadcrumb-item "><a href="/admin-customer">Customer Management</a></li>
-            <li class="breadcrumb-item active">View All Customer</li>
+            <li class="breadcrumb-item "><a href="/admin-mechanic">Employee Management</a></li>
+            <li class="breadcrumb-item active">View All Employee</li>
             </ol>
           </div>
           </div>
@@ -40,7 +52,7 @@
   
         <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Customer Data</h3> 
+          <h3 class="card-title">Employee Data</h3> 
           <a href="{%url 'admin-add-customer'%}">
           <button class="btn btn-success btn-xs" style="margin-left: 74%" data-toggle="modal" data-target="#add"><i class="fa fa-plus"></i> Add Customer</button></a>
         
@@ -48,7 +60,7 @@
           <thead>
           <tr>
                   <th>Name</th>
-                  <th>Profile Picture</th>
+                  {% comment %} <th>Profile Picture</th> {% endcomment %}
                   <th>Mobile</th>
                   <th>Address</th>
                   <th>Skills</th>
@@ -60,7 +72,7 @@
               {% for m in mechanics %}
                 <tr>
                   <td> {{m.get_name}}</td>
-                  <td> <img src="{% static m.profile_pic.url %}" alt="Profile Pic" height="40px" width="40px" /></td>
+                  {% comment %} <td> <img src="{% static m.profile_pic.url %}" alt="Profile Pic" height="40px" width="40px" /></td> {% endcomment %}
                   <td>{{m.mobile}}</td>
                   <td>{{m.address}}</td>
                   <td>{{m.skill}}</td>

@@ -47,9 +47,8 @@
 				<thead>
 				<tr>
                   <th>Name</th>
-                  <th>Car Image</th>
                   <th>Mobile</th>
-                  <th>Address</th>
+                  <th>username</th>
 
                   <th width="7%"></th>
                 </tr>
@@ -58,11 +57,9 @@
               {% for c in customers %}
                 <tr>
                   <td> {{c.get_name}}</td>
-                  <td> <img src="{% static c.profile_pic.url %}" alt="Profile Pic" height="40px" width="40px" /></td>
                   <td>{{c.mobile}}</td>
-                  <td>{{c.address}}</td>
-				 
-          
+                  <td>{{c.get_username}}</td>
+                  
                   <td><a href="{% url 'update-customer' c.id  %}"><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit"><i class="fa fa-edit"></i></button></a> <a href="{% url 'delete-customer' c.id  %}"><button class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button></a></td>
                 </tr>
                 {% endfor %}

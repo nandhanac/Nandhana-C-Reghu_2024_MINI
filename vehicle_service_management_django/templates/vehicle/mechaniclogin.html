@@ -115,6 +115,9 @@ hr.new {
                     <div class="form-group">
                      <input type="submit" name="" value="Login">
                     </div>
+                    {% if form.non_field_errors %}
+                    <div class="text-danger"style="color:red;">{{ form.non_field_errors.0 }}</div><br><br>
+                {% endif %}
                     <div class="form-group">
                       <a href="{% url 'mechanicsignup' %}" class="btn btn-link">Don't have an account yet? Go to signup</a>
                      
