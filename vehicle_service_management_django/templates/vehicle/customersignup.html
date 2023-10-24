@@ -125,21 +125,21 @@
                             {% render_field userForm.password class="form-control" placeholder="Password" %}
                             <div id="password-error" class="text-danger"></div>
                         </div>
-                            <div class="form-group">
+                            {% comment %} <div class="form-group">
                             <label for="id_address" class="form-label">Address</label>
                               {% render_field customerForm.address class="form-control" placeholder="Address" %}
                               <div id="address-error" class="text-danger"></div>
-                            </div>
+                            </div> {% endcomment %}
                               <div class="form-group">
                               <label for="id_mobile" class="form-label">Mobile</label>
                                 {% render_field customerForm.mobile class="form-control" placeholder="Mobile" %}
                                 <div id="mobile-error" class="text-danger"></div>
                             </div>
-                                <div class="form-group">
+                                {% comment %} <div class="form-group">
                                 <label for="id_car_image" class="form-label">Car Image</label><br></br>
                                   {% render_field customerForm.profile_pic class="form-control" placeholder="Profile pic" %}
                                   <div id="car-image-error" class="text-danger"></div>
-                                </div>
+                                </div> {% endcomment %}
                                 <div class="form-group">
                      <input type="submit" name="" value="Create">
                                 </div>

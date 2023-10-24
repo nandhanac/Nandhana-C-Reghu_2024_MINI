@@ -46,9 +46,10 @@
 			</li> {% endcomment %}
 
 			<li class="nav-item avt-wrapper"><div class="navbar-nav ms-auto p-4 p-lg-0">
-				<a href="#" class="nav-item nav-link active">Home</a>
+				<a href="{%url 'users-home'%}" class="nav-item nav-link active">Home</a>
                 <a href= "{% url 'about' %}"class="nav-item nav-link">About</a>
-                <a href="#section1" class="nav-item nav-link">Services</a>
+                <a href="{%url 'users-home'%}" class="nav-item nav-link">Services</a>
+				<a href= "{% url 'about' %}"class="nav-item nav-link">FeedBack</a>
                 {% comment %} <div class="nav-item dropdown"> {% endcomment %}
                     <a href="#" class="nav-item nav-link" data-bs-toggle="dropdown">Assessment</a>
                     {% comment %} <div class="dropdown-menu fade-up m-0">
@@ -83,7 +84,9 @@
 							</a>
 						</li>
 					</ul>
+					
 				</div>
+				
 			</li>
 		</ul>
 					{% comment %} <a href="#" class="dropdown-toggle" data-toggle="user-menu" style="text-decoration:none;color:red;margin-top:20px; margin-right:60px;">
@@ -112,6 +115,7 @@
 			</li>
 		</ul> {% endcomment %}
 		<!-- end nav right -->
+
 	</div>  </div>
 	<!-- end navbar -->
 

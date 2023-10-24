@@ -8,8 +8,9 @@ from django.utils import timezone
 # Create your models here.
 class Customer(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
-    profile_pic= models.ImageField(upload_to='profile_pic/CustomerProfilePic/',null=True,blank=True)
-    address = models.CharField(max_length=40)
+    # profile_pic= models.ImageField(upload_to='profile_pic/CustomerProfilePic/',null=True,blank=True)
+    # address = models.CharField(max_length=40)
+    
     mobile = models.CharField(max_length=20,null=False)
    
     @property
@@ -75,6 +76,9 @@ class Feedback(models.Model):
     date=models.DateField(auto_now=True)
     by=models.CharField(max_length=40)
     message=models.CharField(max_length=500)
+
+    def __str__(self):
+        return self.name
 
 # category
 class Category(models.Model):
@@ -149,6 +153,7 @@ class Booking(models.Model):
     ]
 
     payment_method = models.CharField(max_length=10, choices=PAYMENT_CHOICES,null=True)
+    
 
     def save(self, *args, **kwargs):
         if self.selected_subsubcategory:

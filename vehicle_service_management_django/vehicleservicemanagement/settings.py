@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'vehicle',
     'widget_tweaks',
-    'social_django',    
+    'social_django',
+        
 
 ]
 
@@ -143,17 +144,41 @@ STATIC_DIR,
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-LOGIN_REDIRECT_URL='/afterlogin'
+# LOGIN_REDIRECT_URL='/afterlogin'
 
+# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='216916545297-bdqu1rvr2lkgjt7amjuqe4uj49uct4si.apps.googleusercontent.com' 
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET ='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' 
+
+# SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {'user_type': 'customer'}
+
+# #for contact us give your gmail id and password
+# EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_USE_TLS = True
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'nandhanacreghu2024@mca.ajce.in' # this email will be used to send emails
+# EMAIL_HOST_PASSWORD = 'nandhana@2509' # host email password required
+
+
+LOGIN_REDIRECT_URL = 'users-home'
+LOGIN_URL = 'login'
+ADMIN_DASHBOARD_REDIRECT_URL='admin-dashboard'
+
+
+
+
+# social auth configs for google
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='216916545297-bdqu1rvr2lkgjt7amjuqe4uj49uct4si.apps.googleusercontent.com' 
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET ='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' 
-#for contact us give your gmail id and password
-EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
+# email configs
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'nandhanacreghu2024@mca.ajce.in' # this email will be used to send emails
-EMAIL_HOST_PASSWORD = 'nandhana@2509' # host email password required
+EMAIL_HOST_USER = 'nandhanacreghu2024@mca.ajce.in'
+EMAIL_HOST_PASSWORD = 'nandhana@2509'
+
+
 # now sign in with your host gmail account in your browser
 # open following link and turn it ON
 # https://myaccount.google.com/lesssecureapps

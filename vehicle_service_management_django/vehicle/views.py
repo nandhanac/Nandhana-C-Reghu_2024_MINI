@@ -104,6 +104,47 @@ def service_two(request, category_id):
 
 
 
+def service_three(request):
+    # Retrieve the "Car Spa & Cleaning" category
+    car_spa_category = get_object_or_404(Category, name="Car Spa & Cleaning")
+
+    # Retrieve the subcategories associated with the "Car Spa & Cleaning" category
+    subcategories = Subcategory.objects.filter(category=car_spa_category)
+
+    # Prepare a dictionary where keys are subcategories and values are lists of subsubcategories
+    subcategories_with_subsubcategories = {}
+    for subcategory in subcategories:
+        subsubcategories = SubSubcategory.objects.filter(subcategory=subcategory)
+        subcategories_with_subsubcategories[subcategory] = subsubcategories
+
+    # Pass the "Car Spa & Cleaning" category and the dictionary to the template
+    context = {
+        'car_spa_category': car_spa_category,
+        'subcategories_with_subsubcategories': subcategories_with_subsubcategories,
+    }
+
+    return render(request, 'website/service_three.html', context)
+
+def service_four(request):
+    # Retrieve the "Car Spa & Cleaning" category
+    detailing_category = get_object_or_404(Category, name="Detailing Service")
+
+    # Retrieve the subcategories associated with the "Car Spa & Cleaning" category
+    subcategories = Subcategory.objects.filter(category=detailing_category)
+
+    # Prepare a dictionary where keys are subcategories and values are lists of subsubcategories
+    subcategories_with_subsubcategories = {}
+    for subcategory in subcategories:
+        subsubcategories = SubSubcategory.objects.filter(subcategory=subcategory)
+        subcategories_with_subsubcategories[subcategory] = subsubcategories
+
+    # Pass the "Car Spa & Cleaning" category and the dictionary to the template
+    context = {
+        'detailing_category': detailing_category,
+        'subcategories_with_subsubcategories': subcategories_with_subsubcategories,
+    }
+
+    return render(request, 'website/service_four.html', context)
 
 
 # def selectcar(request):
@@ -294,6 +335,7 @@ def afterlogin_view(request):
             return render(request,'vehicle/mechanic_wait_for_approval.html')
     else:
         return redirect('admin-dashboard')
+
 
 
 
@@ -872,6 +914,8 @@ def customer_request_view(request):
     return render(request,'vehicle/customer_request.html',{'customer':customer})
 
 
+
+
 @login_required(login_url='customerlogin')
 @user_passes_test(is_customer)
 def customer_view_request_view(request):
@@ -1140,6 +1184,7 @@ def book_service(request, subsubcategory_id):
                 # Redirect to the payment page for online payment
                 # Replace 'payment_page' with your actual payment page URL
                 return redirect('payment_confirmation')
+            
     else:
         # form = BookingForm()
         form = BookingForm(initial={'name': request.user.first_name})
@@ -1292,4 +1337,111 @@ def paymenthandler(request):
     else:
         # Handle non-POST requests
         return HttpResponse("Invalid request method", status=405)
+    
+def invoice(request,booking_id):
+    booking = get_object_or_404(Booking, pk=booking_id)
+    return render(request, 'website/invoice.html', {'booking': booking})
 
+from django.http import HttpResponse
+from io import BytesIO
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, Spacer
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+
+def generate_invoice_pdf(request, booking_id):
+    # Get the booking data
+    booking = get_object_or_404(Booking, pk=booking_id)
+
+    # Create a buffer for the PDF document
+    buffer = BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=letter)
+
+    # Create a list of flowables for the PDF content
+    elements = []
+
+    # Define custom styles
+    styles = getSampleStyleSheet()
+    styleN = styles['Normal']
+    styleH = styles['Heading1']
+    
+    # Create custom styles
+    custom_style_title = ParagraphStyle(
+        name='CustomTitle',
+        parent=styleH,
+        fontSize=14,
+        leading=18,
+        textColor=colors.blue,
+    )
+
+    custom_style_subtitle = ParagraphStyle(
+        name='CustomSubtitle',
+        parent=styleN,
+        fontSize=12,
+        leading=16,
+        textColor=colors.black,
+    )
+
+    # Add the title
+    elements.append(Paragraph('Invoice', custom_style_title))
+    elements.append(Spacer(1, 12))
+
+    # Add booking ID and date
+    elements.append(Paragraph(f'Booking ID: {booking.id}', custom_style_subtitle))
+    elements.append(Paragraph(f'Booking Date: {booking.appointment_date.strftime("%d/%m/%Y")}', custom_style_subtitle))
+    elements.append(Spacer(1, 12))
+
+    # Add Invoice From information
+    elements.append(Paragraph('Invoice From:', custom_style_subtitle))
+    elements.append(Paragraph('SplashPaintZone', custom_style_subtitle))
+    elements.append(Paragraph('123 Street, Kanjirappally, Kerala', custom_style_subtitle))
+    elements.append(Spacer(1, 12))
+
+    # Add Invoice To information
+    elements.append(Paragraph('Invoice To:', custom_style_subtitle))
+    elements.append(Paragraph(booking.name, custom_style_subtitle))
+    elements.append(Paragraph(booking.address, custom_style_subtitle))
+    elements.append(Spacer(1, 12))
+
+    # Add Payment Method
+    elements.append(Paragraph(f'Payment Method: {booking.payment_method}', custom_style_subtitle))
+
+    # Add Payment Details and Bank Name if the method is 'Online'
+    # if booking.payment_method == "Online":
+    #     elements.append(Paragraph(f'Payment Details: {booking.payment_details}', custom_style_subtitle))
+    #     elements.append(Paragraph(f'Bank Name: {booking.bank_name}', custom_style_subtitle))
+
+    elements.append(Spacer(1, 12))
+
+    # Add Description, Quantity, VAT, and Total Amount
+    table_data = [
+        ['Description:', booking.selected_subsubcategory.name],
+        ['Quantity:', '1'],
+        ['VAT:', '$0'],
+        ['Total Amount:', f'${booking.selected_subsubcategory.price}'],
+    ]
+    table = Table(table_data, colWidths=[100, 400])
+    table.setStyle(
+        [
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('TEXTCOLOR', (0, 0), (0, -1), colors.black),
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ]
+    )
+    elements.append(table)
+    elements.append(Spacer(1, 12))
+
+    # Add Other Information
+    
+
+    # Build the PDF document
+    doc.build(elements)
+
+    # Create a response with the PDF content
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="invoice_{booking.id}.pdf"'
+    response.write(buffer.getvalue())
+    buffer.close()
+
+    return response

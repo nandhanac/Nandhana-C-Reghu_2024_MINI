@@ -16,6 +16,9 @@ path('', include('vehicle.urls')),
     path('',views.home_view,name='home'),
 path('service_one',views.service_one,name='service_one'),
 path('service_two/<int:category_id>/', views.service_two, name='service_two'),
+path('service_three', views.service_three, name='service_three'),
+path('service_four', views.service_four, name='service_four'),
+
 path('car-models/', views.car_models, name='car-models'),
 path('selectcar/<int:subsubcategory_id>/', views.selectcar, name='selectcar'),
 path('create_car_name/', views.create_car_name, name='create_car_name'),
@@ -51,6 +54,10 @@ path('confirmation/<int:payment_amount>/<int:booking_id>/', views.booking_confir
 
     path('paymenthandler/', views.paymenthandler, name='paymenthandler'),
     path('payment_confirmation', views.payment_confirmation, name='payment_confirmation'),
+
+path('invoice/<int:booking_id>/', views.invoice, name='invoice'),
+path('generate_invoice_pdf/<int:booking_id>/', views.generate_invoice_pdf, name='generate_invoice_pdf'),
+
 
     path('customerlogin', LoginView.as_view(template_name='vehicle/customerlogin.html'),name='customerlogin'),
     path('mechaniclogin', LoginView.as_view(template_name='vehicle/mechaniclogin.html'),name='mechaniclogin'),

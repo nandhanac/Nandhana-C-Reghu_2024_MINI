@@ -92,13 +92,15 @@
                 <a href= "{% url 'about' %}"class="nav-item nav-link">About</a>
                 <a href="#section1" class="nav-item nav-link">Services</a>
                 {% comment %} <div class="nav-item dropdown"> {% endcomment %}
-                    <a href="#" class="nav-item nav-link" data-bs-toggle="dropdown">Assessment</a>
+                    <a href="https://10c4b5de5e53f6a707.gradio.live" class="nav-item nav-link" data-bs-toggle="dropdown">Assessment</a>
+
+
                     <div class="btn-group"> <a href="{% url 'customer-request' %}" class="nav-item nav-link dropdown-toggle dropdown-toggle-split py-4 px-lg-3" data-bs-toggle="dropdown"aria-haspopup="true" aria-expanded="false">Appointment</a>
                 
                       <div class="dropdown-menu"style="background-color:red;">
                         <!-- Dropdown items go here -->
                         <a class="dropdown-item" href="{%url 'customer-view-request'%}">View Request</a>
-                        <a class="dropdown-item" href="{%url 'customer-view-approved-request'%}" >Approved Request</a>
+                        <a class="dropdown-item" href="{%url 'customer-view-approved-request' %}" >Approved Request</a>
                       
                       </div>
                     </div>
@@ -109,7 +111,7 @@
                         <a href="404.html" class="dropdown-item">404 Page</a>
                     </div> 
                 </div>{% endcomment %}
-                <a href="contact.html" class="nav-item nav-link">Contact</a>
+                <a href="{%url 'customer-feedback'%}" class="nav-item nav-link">FeedBack</a>
             </div>
             
             <div class="avt dropdown">
@@ -562,12 +564,13 @@
                                 <a class="btn btn-square mx-1" href=""><i class="fa fa-plus-square"></i></a>
                             </div>
                         </div>
+                        <a href="{% url 'service_three'   %}"> 
                         <div class="bg-light text-center p-4">
                             <h5 class="fw-bold mb-0">{{ car_spa_category_name }}</h5>
                             <br>
                             <img class="img-fluid" src="{% static 'images/ser3.png' %}" alt="" style="width:50px;height:60px;">
                         </div>
-                    </div>
+                    </div></a>
                 </div>
                 <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
                     <div class="team-item">
@@ -579,12 +582,13 @@
                                 <a class="btn btn-square mx-1" href=""><i class="fa fa-plus-square"></i></a> 
                             </div>
                         </div>
+                        <a href="{% url 'service_four'   %}"> 
                         <div class="bg-light text-center p-4">
                             <h5 class="fw-bold mb-0">{{ detailing_category_name }}</h5>
                             <br>
                             <img class="img-fluid" src="{% static 'images/ser4.png' %}" alt="" style="width:50px;height:60px;">
                         </div>
-                    </div>
+                    </div></a>
                 </div>
             </div>
         </div>

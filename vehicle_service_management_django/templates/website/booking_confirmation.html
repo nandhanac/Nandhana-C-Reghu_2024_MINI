@@ -125,7 +125,7 @@
 										<i class="fas fa-check"></i>
 										<h3>Appointment booked Successfully!</h3>
 										<p>Appointment booked for {{ booking.appointment_date }}</p>
-										<a href="invoice-view.html" class="btn btn-primary view-inv-btn" style="background-color:#D81324;border-color:#D81324; ">View Invoice</a>
+										<a href="{% url 'invoice' booking.id %}" class="btn btn-primary view-inv-btn" style="background-color:#D81324;border-color:#D81324; ">View Invoice</a>
 									</div>
 								</div>
 							</div>

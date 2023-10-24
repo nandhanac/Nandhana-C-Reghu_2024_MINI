@@ -1,0 +1,215 @@
+<!DOCTYPE html> 
+<html lang="en">
+	
+<!-- doccure/invoice-view.html  30 Nov 2019 04:12:19 GMT -->
+<head>
+	{% load static %}   
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>SPLASHPAINTZONE</title>
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/favicon.png' %}">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/font-awesome.min.css' %}">
+    
+    <!-- Feathericon CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/feathericon.min.css' %}">
+    
+    <!-- Datatables CSS -->
+    <link rel="stylesheet" href="{% static 'assets/plugins/datatables/datatables.min.css' %}">
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+		
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+			<script src="assets/js/html5shiv.min.js"></script>
+			<script src="assets/js/respond.min.js"></script>
+		<![endif]-->
+	
+	</head>
+	<body>
+
+		<!-- Main Wrapper -->
+		<div class="main-wrapper">
+		
+			
+			
+			<!-- Breadcrumb -->
+			<div class="breadcrumb-bar" style="background-color:#D81324;">
+				<div class="container-fluid">
+					<div class="row align-items-center">
+						<div class="col-md-12 col-12">
+							<nav aria-label="breadcrumb" class="page-breadcrumb">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="{%url 'users-home'%}"style="text-decoration:none;">Home</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Booking</li>
+								</ol>
+							</nav>
+							<h2 class="breadcrumb-title">Invoice</h2>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /Breadcrumb -->
+			
+			<!-- Page Content -->
+			<div class="content">
+				<div class="container-fluid">
+
+					<div class="row">
+						<div class="col-lg-8 offset-lg-2">
+							<div class="invoice-content">
+								<div class="invoice-item">
+									<div class="row">
+										<div class="col-md-6">
+											
+										</div>
+										<div class="col-md-6">
+											<p class="invoice-details">
+												<strong>Booking ID:</strong> #{{ booking.id }} <br>
+												<strong>Booking Date:</strong> {{ booking.appointment_date|date:"d/m/Y" }}
+											</p>
+										</div>
+									</div>
+								</div>
+								
+								<!-- Invoice Item -->
+								<div class="invoice-item">
+									<div class="row">
+										<div class="col-md-6">
+											<div class="invoice-info">
+												<strong class="customer-text">Invoice From</strong>
+												<p class="invoice-details invoice-details-two">
+													SplashPaintZone <br>
+													123 Street, Kanjirappally, Kerala<br>
+													 <br>
+												</p>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="invoice-info invoice-info2">
+												<strong class="customer-text">Invoice To</strong>
+												<p class="invoice-details">
+													{{booking.name}} <br>
+													{{ booking.address }} <br>
+													{{ booking.Alternative_mobile  }} <br>
+													<br>
+												</p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- /Invoice Item -->
+								
+								<!-- Invoice Item -->
+<div class="invoice-item">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="invoice-info">
+                <strong class="customer-text">Payment Method</strong>
+                <p class="invoice-details invoice-details-two">
+                    {{ booking.payment_method }} <br>
+                    {% if booking.payment_method == "Online" %}
+                        {{ booking.payment_details }} <br>  <!-- You can add a field for payment details if necessary -->
+                        {{ booking.bank_name }} <br>  <!-- You can add a field for the bank name if necessary -->
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Invoice Item -->
+
+								<!-- Invoice Item -->
+								<div class="invoice-item invoice-table-wrap">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="table-responsive">
+												<table class="invoice-table table table-bordered">
+													<thead>
+														<tr>
+															<th>Description</th>
+															<th class="text-center">Quantity</th>
+															<th class="text-center">VAT</th>
+															<th class="text-right">Total</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>{{ booking.selected_subsubcategory.name }}</td>
+															<td class="text-center">1</td>
+															<td class="text-center">$0</td>
+															<td class="text-right">${{ booking.selected_subsubcategory.price }}</td>
+														</tr>
+														
+													</tbody>
+												</table>
+											</div>
+										</div>
+										<div class="col-md-6 col-xl-4 ml-auto">
+											<div class="table-responsive">
+												<table class="invoice-table-two table">
+													<tbody>
+													<tr>
+														<th>Subtotal:</th>
+														<td><span>${{ booking.selected_subsubcategory.price }}</span></td>
+													</tr>
+													<tr>
+														<th>Discount:</th>
+														<td><span>0</span></td>
+													</tr>
+													<tr>
+														<th>Total Amount:</th>
+														<td><span>${{ booking.selected_subsubcategory.price }}</span></td>
+													</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- /Invoice Item -->
+								
+								<!-- Invoice Information -->
+								<div class="other-info">
+									<a href="{% url 'generate_invoice_pdf' booking.id %}" class="btn btn-primary" style="background-color:#D81324; border: 2px solid #D81324; color: white;">Print Invoice</a>
+								</div>
+								<!-- /Invoice Information -->
+								
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>		
+			<!-- /Page Content -->
+   
+			
+					
+					
+						
+					
+		</div>
+		<!-- /Main Wrapper -->
+	  
+		<!-- jQuery -->
+		<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+		
+		<!-- Bootstrap Core JS -->
+		<script src="{% static 'assets/js/popper.min.js' %}"></script>
+		<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+		
+		<!-- Custom JS -->
+		<script src="{% static 'assets/js/script.js' %}"></script>
+		
+	</body>
+
+<!-- doccure/invoice-view.html  30 Nov 2019 04:12:20 GMT -->
+</html>

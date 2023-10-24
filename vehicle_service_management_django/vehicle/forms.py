@@ -19,7 +19,7 @@ class CustomerUserForm(forms.ModelForm):
 class CustomerForm(forms.ModelForm):
     class Meta:
         model=models.Customer
-        fields=['address','mobile','profile_pic']
+        fields=['mobile']
 
 
 class MechanicUserForm(forms.ModelForm):
@@ -77,6 +77,7 @@ class FeedbackForm(forms.ModelForm):
     class Meta:
         model=models.Feedback
         fields=['by','message']
+        
         widgets = {
         'message':forms.Textarea(attrs={'rows': 6, 'cols': 30})
         }
@@ -232,13 +233,17 @@ class BookingForm(forms.ModelForm):
     )
     def clean_appointment_date(self):
         appointment_date = self.cleaned_data.get('appointment_date')
-
+        
         # Check if there are already three appointments for the selected date
         existing_appointments_count = Booking.objects.filter(appointment_date=appointment_date).count()
 
         if existing_appointments_count >= 3:
-            raise ValidationError('....>>>>......Maximum appointments reached for this date.......>>>.....')
+            raise ValidationError('Maximum appointments reached for this date.! please select another date')
 
+        if appointment_date:
+            if appointment_date.weekday() == 6:  # Sunday is weekday 6
+                raise ValidationError("Sundays are not allowed for appointments!  please select another date")
+        
         return appointment_date
 
-    
+

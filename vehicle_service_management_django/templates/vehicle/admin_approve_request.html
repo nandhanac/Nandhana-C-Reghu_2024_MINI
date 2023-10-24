@@ -38,7 +38,7 @@
                     <td>{{ booking.Alternative_mobile }}</td>
                     <td>{{ booking.selected_subsubcategory }}</td>
                     <td>{{ booking.selected_service_price }}</td>
-					<td>{{ booking.get_payment_method_display }}</td>  
+					<td>{{ booking.get_payment_method_display }}</td>
                   <td><a  style="color:red; text-decoration:none;font-size:25px;" href="{% url 'approve-request' booking.id  %}">&#10004;</a></td>
                     </tr>
                 {% endfor %}
